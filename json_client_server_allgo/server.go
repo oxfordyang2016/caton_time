@@ -5,6 +5,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"os"
 )
@@ -46,7 +47,8 @@ func main() {
 		if err != nil {
 			continue
 		}
-		fmt.Println(conn.Read())
+		fmt.Println(ioutil.ReadAll(conn))
+
 		encoder := json.NewEncoder(conn)
 		decoder := json.NewDecoder(conn)
 		fmt.Println("i am printing encoder ====>", encoder)
