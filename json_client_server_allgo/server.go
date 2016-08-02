@@ -47,9 +47,10 @@ func main() {
 			continue
 		}
 		fmt.Println(conn)
-		//encoder := json.NewEncoder(conn)
-		//decoder := json.NewDecoder(conn)
-
+		encoder := json.NewEncoder(conn)
+		decoder := json.NewDecoder(conn)
+		fmt.Println("i am printing encoder ====>", encoder)
+		fmt.Println("decoder===>", decoder)
 		/*for n := 0; n < 10; n++ {
 			var person Person
 			decoder.Decode(&person)
