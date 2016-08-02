@@ -47,7 +47,7 @@ func main() {
 		if err != nil {
 			continue
 		}
-		k := ioutil.ReadAll(conn)
+		k, err := ioutil.ReadAll(conn)
 		fmt.Println(string(k))
 
 		encoder := json.NewEncoder(conn)
