@@ -46,16 +46,16 @@ func main() {
 		if err != nil {
 			continue
 		}
+		fmt.Println(conn)
+		//encoder := json.NewEncoder(conn)
+		//decoder := json.NewDecoder(conn)
 
-		encoder := json.NewEncoder(conn)
-		decoder := json.NewDecoder(conn)
-
-		for n := 0; n < 10; n++ {
+		/*for n := 0; n < 10; n++ {
 			var person Person
 			decoder.Decode(&person)
 			fmt.Println(person.String())
 			encoder.Encode(person)
-		}
+		}*/
 		conn.Close() // we're finished
 	}
 }
