@@ -1,7 +1,0 @@
-package wangyan
-var k=45
-func ha() int{
-
-return k
-
-} 	 
