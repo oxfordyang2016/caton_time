@@ -46,7 +46,7 @@ func main() {
 		if err != nil {
 			continue
 		}
-		fmt.Println(*conn)
+		fmt.Println(conn.Read())
 		encoder := json.NewEncoder(conn)
 		decoder := json.NewDecoder(conn)
 		fmt.Println("i am printing encoder ====>", encoder)
