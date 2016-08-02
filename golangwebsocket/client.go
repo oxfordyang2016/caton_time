@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	origin := "http://localhost:8080/"
-	url := "ws://localhost:8080/ws"
+	origin := "http://192.168.0.53:8080/"
+	url := "ws://192.168.0.53:8080/ws"
 
 	var err error
 	var ws *websocket.Conn
