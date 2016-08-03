@@ -31,11 +31,11 @@ func handleClient(conn *net.UDPConn) {
 	if err != nil {
 		return
 	}
-	fmt.Println(readinfo)      //get info
-	fmt.Println(addr.String()) //get ip info
 	//again try to read info
 	n, err := conn.Read(buf[0:])
 	checkError(err)
+	fmt.Println(readinfo)      //get info
+	fmt.Println(addr.String()) //get ip info
 
 	fmt.Println(string(buf[0:n]))
 	//read end
