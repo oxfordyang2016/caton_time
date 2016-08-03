@@ -35,8 +35,10 @@ func main() {
 		fmt.Println("Received from server:=================> " + msg)
 		// return the msg
 		//========================send info=================================//
-		sendinfo := "i love go"
-		err = websocket.Message.Send(conn, sendinfo)
+		//sendinfo := "i love go"
+		sendjson := `{"from":"a", "cmd": "register", "type": "rsp",
+		"seq": 11,"task_id":"67","uid":"6732","token": "EF02JLGFA09GVNG21F","rsp":{"register":{"tnid":"56"}}}`
+		err = websocket.Message.Send(conn, sendjson)
 		if err != nil {
 			fmt.Println("Coduln't return msg")
 			break
