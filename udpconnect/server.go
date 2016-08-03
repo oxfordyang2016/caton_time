@@ -31,7 +31,8 @@ func handleClient(conn *net.UDPConn) {
 	if err != nil {
 		return
 	}
-	fmt.Println(readinfo)
+	fmt.Println(readinfo)      //get info
+	fmt.println(addr.String()) //get info
 
 	daytime := time.Now().String()
 
