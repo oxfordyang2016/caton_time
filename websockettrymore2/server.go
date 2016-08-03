@@ -188,7 +188,7 @@ func Echo(ws *websocket.Conn) {
 		fmt.Println("==============from=================>", msg1.From)
 
 		//=====================end==============
-		if err != nil {
+		if err1 != nil {
 			fmt.Println("Can't receive")
 			break
 		}
