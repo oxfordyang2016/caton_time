@@ -17,10 +17,13 @@ func main() {
 	service := os.Args[1]
 
 	conn, err := websocket.Dial(service, "", "http://localhost")
+	//client in local(the third arg)
 	checkError(err)
 	var msg string
 	for {
+		//info write to msg from server
 		err := websocket.Message.Receive(conn, &msg)
+
 		if err != nil {
 			if err == io.EOF {
 				// graceful shutdown by server
@@ -32,7 +35,7 @@ func main() {
 		fmt.Println("Received from server:=================> " + msg)
 		// return the msg
 		//========================send info=================================//
-		sendinfo = "i love go"
+		sendinfo := "i love go"
 		err = websocket.Message.Send(conn, sendinfo)
 		if err != nil {
 			fmt.Println("Coduln't return msg")
