@@ -27,10 +27,11 @@ func handleClient(conn *net.UDPConn) {
 
 	var buf [512]byte
 
-	_, addr, err := conn.ReadFromUDP(buf[0:])
+	readinfo, addr, err := conn.ReadFromUDP(buf[0:])
 	if err != nil {
 		return
 	}
+	fmt.Println(readinfo)
 
 	daytime := time.Now().String()
 
