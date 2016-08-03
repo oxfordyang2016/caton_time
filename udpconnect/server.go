@@ -32,8 +32,13 @@ func handleClient(conn *net.UDPConn) {
 		return
 	}
 	fmt.Println(readinfo)      //get info
-	fmt.Println(addr.String()) //get info
+	fmt.Println(addr.String()) //get ip info
+	//again try to read info
+	n, err := conn.Read(buf[0:])
+	checkError(err)
 
+	fmt.Println(string(buf[0:n]))
+	//read end
 	daytime := time.Now().String()
 
 	conn.WriteToUDP([]byte(daytime), addr)
