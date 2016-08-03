@@ -50,10 +50,10 @@ func main() {
 		k, err := ioutil.ReadAll(conn)
 		fmt.Println(string(k))
 
-		encoder := json.NewEncoder(conn)
-		decoder := json.NewDecoder(conn)
-		fmt.Println("i am printing encoder ====>", encoder)
-		fmt.Println("decoder===>", decoder)
+		//encoder := json.NewEncoder(conn)//manipulate conn
+		//decoder := json.NewDecoder(conn)//manipulate conn
+		//fmt.Println("i am printing encoder ====>", encoder)
+		//fmt.Println("decoder===>", decoder)
 		/*for n := 0; n < 10; n++ {
 			var person Person
 			decoder.Decode(&person)
