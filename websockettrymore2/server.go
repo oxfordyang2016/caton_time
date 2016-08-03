@@ -185,7 +185,7 @@ func Echo(ws *websocket.Conn) {
 
 		var msg1 Message
 		err := json.Unmarshal(text, &msg1)
-		fmt.Println("==============from=================>", msg.From)
+		fmt.Println("==============from=================>", msg1.From)
 
 		//=====================end==============
 		if err != nil {
