@@ -3,7 +3,7 @@
 package main
 
 import (
-	"bytes"
+	//	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -49,6 +49,10 @@ func main() {
 	conn, err := net.Dial("tcp", service)
 	checkError(err)
 
+	k, err := ioutil.ReadAll(conn) //read info from  conn
+	fmt.Println(string(k))
+	con.Write([]byte("i love you"))
+
 	encoder := json.NewEncoder(conn)
 	decoder := json.NewDecoder(conn)
 
@@ -69,7 +73,7 @@ func checkError(err error) {
 	}
 }
 
-func readFully(conn net.Conn) ([]byte, error) {
+/*func readFully(conn net.Conn) ([]byte, error) {
 	defer conn.Close()
 
 	result := bytes.NewBuffer(nil)
@@ -86,3 +90,4 @@ func readFully(conn net.Conn) ([]byte, error) {
 	}
 	return result.Bytes(), nil
 }
+*/
