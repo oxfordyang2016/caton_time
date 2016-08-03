@@ -184,7 +184,7 @@ func Echo(ws *websocket.Conn) {
 		text := []byte(reply)
 
 		var msg1 Message
-		err := json.Unmarshal(text, &msg1)
+		err1 := json.Unmarshal(text, &msg1)
 		fmt.Println("==============from=================>", msg1.From)
 
 		//=====================end==============
