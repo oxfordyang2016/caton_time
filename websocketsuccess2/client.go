@@ -29,9 +29,11 @@ func main() {
 			fmt.Println("Couldn't receive msg " + err.Error())
 			break
 		}
-		fmt.Println("Received from server: " + msg)
+		fmt.Println("Received from server:=================> " + msg)
 		// return the msg
-		err = websocket.Message.Send(conn, msg)
+		//========================send info=================================//
+		sendinfo = "i love go"
+		err = websocket.Message.Send(conn, sendinfo)
 		if err != nil {
 			fmt.Println("Coduln't return msg")
 			break
