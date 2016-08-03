@@ -49,7 +49,7 @@ func main() {
 		}
 		k, err := ioutil.ReadAll(conn) //read info from  conn
 		fmt.Println(string(k))
-		con.Write([]byte("i love you"))
+		conn.Write([]byte("i love you"))
 		//encoder := json.NewEncoder(conn)//manipulate conn
 		//decoder := json.NewDecoder(conn)//manipulate conn
 		//fmt.Println("i am printing encoder ====>", encoder)
