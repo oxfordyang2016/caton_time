@@ -1,0 +1,28 @@
+	                  ------->a.go---------|
+src----|			  |                    |————————>package echo
+	   |              |                              func new() {} 
+	   echo---------->|------>b.go---------|
+			          |                    |  
+					  |                    |-------->package echo
+					  |------->c.go                   func h() err{} 
+					            |
+					            |------->package echo
+					                     var a int
+					                     a=5
+			                ||
+			                ||
+			                ||
+			              compile 
+			                ||
+			                ||
+			              use echo package
+			                 |
+                             |
+                             |
+                             package main
+                             import "echo"
+                             fun mian(){
+                              a:=echo.new()
+                             
+                             } 
+    note--->(after compiling,you can use the stuff ofany go file)
