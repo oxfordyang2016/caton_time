@@ -16,7 +16,7 @@ func Echo(ws *websocket.Conn) {
 	for n := 0; n < 10; n++ {
 		msg := "Hello client " + string(n+48)
 		fmt.Println("Sending to client: " + msg)
-		err := websocket.Message.Send(ws, msg)
+		err := websocket.Message.Send(ws, msg) //send infomation
 
 		if err != nil {
 			fmt.Println("Can't send")
@@ -24,7 +24,7 @@ func Echo(ws *websocket.Conn) {
 		}
 
 		var reply string
-		err = websocket.Message.Receive(ws, &reply)
+		err = websocket.Message.Receive(ws, &reply) //receive info
 		if err != nil {
 			fmt.Println("Can't receive")
 			break
@@ -36,7 +36,8 @@ func Echo(ws *websocket.Conn) {
 func main() {
 
 	http.Handle("/", websocket.Handler(Echo))
-	err := http.ListenAndServe(":88", nil)
+	//this is route,accept info and deal with it
+	err := http.ListenAndServe(":88", nil) //this is to launch  server
 	checkError(err)
 }
 
