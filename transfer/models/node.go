@@ -5,7 +5,7 @@ import (
 )
 //node 's function is download and upload
 type Node struct {
-	Id             uint64    `xorm:"pk autoincr"`
+	Id             uint64    `xorm:"pk autoincr"`//it is likely other type from other machine
 	MachineCode    string    `xorm:"varchar(255) not null unique"`
 	Nid            string    `xorm:"varchar(64) not null unique"`
 	Name           string    `xorm:"varchar(255)"`

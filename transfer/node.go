@@ -1,7 +1,7 @@
 package transfer
 //in fact,the node is about  to deal with info
 import (
-	"./models"
+	"./models"//pwd is transfer.subdir  models
 	"cydex"
 	"cydex/transfer"
 	"errors"
@@ -31,7 +31,7 @@ func init() {
 
 // 注册Node, 分配tnid
 func registerNode(req *transfer.RegisterReq) (code int, tnid string, err error) {
-	var node *models.Node
+	var node *models.Node//THIS NODE IS NOT OTHER NODES
 	node, err = models.GetNodeByMachineCode(req.MachineCode)
 	if node != nil {
 		// 已经存在
@@ -140,8 +140,9 @@ func NewTimeMessage(msg *transfer.Message) *TimeMessage {
 }
 
 // TransferNode
-//
+//add some stuffs  to models.Node 
 type Node struct {
+	//from tranfer/models
 	*models.Node
 
 	// 运行时数据
@@ -225,6 +226,7 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 	if msg.IsReq() {
 		switch lower_cmd {
 		case "register":
+			//nowtime rsp is initialized
 			err = self.handleRegister(msg, rsp)//responding to below register
 		case "login":
 			err = self.handleLogin(msg, rsp)
@@ -257,7 +259,8 @@ func (self *Node) handleRegister(msg, rsp *transfer.Message) (err error) {
 		rsp.Rsp.Reason = err.Error()
 		return//return this situation explain that  (err error) derectly return back err
 	}
-	code, tnid, err := registerNode(msg.Req.Register)
+	//many return value,
+	code, tnid, err := registerNode(msg.Req.Register)//from message struct(cydex)
 	if code == cydex.OK && tnid != "" {
 		rsp.Rsp.Code = code
 		rsp.Rsp.Register = &transfer.RegisterRsp{
