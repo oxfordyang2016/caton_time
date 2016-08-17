@@ -4,6 +4,7 @@ import (
 	"time"
 )
 //node 's function is download and upload
+//this is likely related to database manipulation
 type Node struct {
 	Id             uint64    `xorm:"pk autoincr"`//it is likely other type from other machine
 	MachineCode    string    `xorm:"varchar(255) not null unique"`
@@ -22,6 +23,7 @@ func CreateNode(machine_code, nid string) (*Node, error) {
 		MachineCode: machine_code,
 		Nid:         nid,
 	}
+	//THIS IS A process of writting database
 	if _, err := DB().Insert(n); err != nil {
 		return nil, err
 	}
@@ -40,10 +42,11 @@ func GetNode(nid string) (n *Node, err error) {
 	n.RegisterTime = n.CreateAt
 	return n, nil
 }
-
-func GetNodeByMachineCode(mc string) (n *Node, err error) {
+//it is related to comunicate with database
+func GetNodeByMachineCode(mc string) (n *Node, err error) {//there will pass macchinecode
 	n = new(Node)
 	var existed bool
+	//it is looking up machinecode in database
 	if existed, err = DB().Where("machine_code=?", mc).Get(n); err != nil {
 		return nil, err
 	}

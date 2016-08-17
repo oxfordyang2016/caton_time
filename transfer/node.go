@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	clog "github.com/cihub/seelog"
-	"github.com/pborman/uuid"
+	"github.com/pborman/uuid"//this package generates and inspects uuid           
 	"golang.org/x/net/websocket"
 	"net"
 	"strings"
@@ -30,15 +30,17 @@ func init() {
 //what is fuck
 
 // 注册Node, 分配tnid
+//from msg get about req infomation
 func registerNode(req *transfer.RegisterReq) (code int, tnid string, err error) {
 	var node *models.Node//THIS NODE IS NOT OTHER NODES
+	//in datbase ,lookuping machinecode
 	node, err = models.GetNodeByMachineCode(req.MachineCode)
 	if node != nil {
 		// 已经存在
 		return cydex.OK, node.Nid, err
 	}
-	tnid = uuid.New()
-	if _, err = models.CreateNode(req.MachineCode, tnid); err != nil {
+	tnid = uuid.New()//this is to generate a uuid to identify machinecode
+	if _, err = models.CreateNode(req.MachineCode, tnid); err != nil {//register machinecode and tnid
 		code = cydex.ErrInnerServer
 		return
 	}
@@ -214,6 +216,7 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 		//if the info received is request,it will build response
 		rsp.Rsp.Code = cydex.OK
 //there logic is not starnge
+		//it is likely erorr !!!!!!
 		if msg == nil {//if receive info is empty
 			rsp.Rsp.Code = cydex.ErrInvalidParam
 			rsp.Rsp.Reason = "Invalid Param"
