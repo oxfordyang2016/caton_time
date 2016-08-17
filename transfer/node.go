@@ -1,5 +1,5 @@
 package transfer
-
+//in fact,the node is about  to deal with info
 import (
 	"./models"
 	"cydex"
@@ -27,6 +27,7 @@ var (
 func init() {
 	NodeMgr = NewNodeManager()
 }
+//what is fuck
 
 // 注册Node, 分配tnid
 func registerNode(req *transfer.RegisterReq) (code int, tnid string, err error) {
@@ -139,6 +140,7 @@ func NewTimeMessage(msg *transfer.Message) *TimeMessage {
 }
 
 // TransferNode
+//
 type Node struct {
 	*models.Node
 
@@ -157,17 +159,19 @@ type Node struct {
 	rsp_sem  chan int
 	rsp_lock sync.Mutex
 	rsp_msgs map[uint32]*TimeMessage
-	server   *WSServer
+	server   *WSServer//ws
 	closed   bool
 }
 
+//this node is used to hold some server important info
 func NewNode(ws *websocket.Conn, server *WSServer) *Node {
-	n := new(Node)
+	n := new(Node)//it is allocate memory and initiaze it
 	n.server = server
-	n.SetWSConn(ws)
+	n.SetWSConn(ws)//from below
 	// n.rsp_chan = make(chan *TimeMessage)
-	n.rsp_sem = make(chan int)
-	n.rsp_msgs = make(map[uint32]*TimeMessage)
+	n.rsp_sem = make(chan int)//make a channel that can send ,recieve and deliver a int
+	//make return  a same type other than pointer
+	n.rsp_msgs = make(map[uint32]*TimeMessage)//in bracket ,it is map type
 	return n
 }
 
@@ -175,14 +179,16 @@ func (self *Node) Verify(nid, token string) bool {
 	return self.Token == token && self.Nid == nid
 }
 
+//=================set websocket config from node====================
 func (self *Node) SetWSConn(ws *websocket.Conn) {
 	self.ws = ws
 	if ws != nil {
-		addr := ws.Request().RemoteAddr
+		addr := ws.Request().RemoteAddr//for instance:resolve addr 192,168.0.21:90
 		host, _, err := net.SplitHostPort(addr)
 		if err == nil {
 			self.Host = host
 		}
+
 	}
 }
 
@@ -198,12 +204,16 @@ func (self *Node) Update(update_login_time bool) {
 		self.Node.UpdateLoginTime(time.Now())
 	}
 }
-
+//there is node handler   to do somthings accoding to resloved json-struct info
 func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err error) {
-	if msg.IsReq() {
-		rsp = msg.BuildRsp()
+	//transfer from cydex/tranfer
+//this function return many values and format is caution
+	if msg.IsReq() {//msg has been resolved to msg struct
+		rsp = msg.BuildRsp()//msg is infomation by resolved
+		//if the info received is request,it will build response
 		rsp.Rsp.Code = cydex.OK
-		if msg == nil {
+//there logic is not starnge
+		if msg == nil {//if receive info is empty
 			rsp.Rsp.Code = cydex.ErrInvalidParam
 			rsp.Rsp.Reason = "Invalid Param"
 			return
@@ -211,10 +221,11 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 	}
 
 	lower_cmd := strings.ToLower(msg.Cmd)
+	//according to receive resolved struct's cmd to do some actions
 	if msg.IsReq() {
 		switch lower_cmd {
 		case "register":
-			err = self.handleRegister(msg, rsp)
+			err = self.handleRegister(msg, rsp)//responding to below register
 		case "login":
 			err = self.handleLogin(msg, rsp)
 		case "keepalive":
@@ -228,7 +239,7 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 		if err == nil {
 			self.Update(false)
 		}
-	} else {
+	} else {//warn:it start to use self!
 		self.rsp_lock.Lock()
 		self.rsp_msgs[msg.Seq] = NewTimeMessage(msg)
 		self.rsp_lock.Unlock()
@@ -237,12 +248,14 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 	return
 }
 
+
+//according to request command register
 func (self *Node) handleRegister(msg, rsp *transfer.Message) (err error) {
-	if msg.Req == nil || msg.Req.Register == nil {
+	if msg.Req == nil || msg.Req.Register == nil {//msg is likely  struct
 		err = fmt.Errorf("Invalid Param")
 		rsp.Rsp.Code = cydex.ErrInvalidParam
 		rsp.Rsp.Reason = err.Error()
-		return
+		return//return this situation explain that  (err error) derectly return back err
 	}
 	code, tnid, err := registerNode(msg.Req.Register)
 	if code == cydex.OK && tnid != "" {

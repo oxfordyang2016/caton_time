@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 )
-
+//node 's function is download and upload
 type Node struct {
 	Id             uint64    `xorm:"pk autoincr"`
 	MachineCode    string    `xorm:"varchar(255) not null unique"`

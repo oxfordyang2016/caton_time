@@ -1,10 +1,12 @@
 package main
-
+//about this server dev ,i want to say that
+//ts is a central mannage unit,and it control database,tn and other config
+//tn's reponsibility is to download and upload 
 import (
-	_ "./api/"
-	"./db"
+	_ "./api/"//i guess it is another_name
+	"./db"//current dir
 	"./pkg"
-	pkg_model "./pkg/models"
+	pkg_model "./pkg/models"//this another name
 	trans "./transfer"
 	trans_model "./transfer/models"
 	"./transfer/task"
@@ -12,11 +14,16 @@ import (
 	clog "github.com/cihub/seelog"
 )
 
+//============================log block=================================================================>
 func initLog() {
 	cfgfiles := []string{
-		"/opt/cydex/etc/ts_seelog.xml",
+		"/opt/cydex/etc/ts_seelog.xml",//it work at after make,in linux mkdir 
 		"seelog.xml",
-	}
+	}//slice
+
+
+
+
 	for _, file := range cfgfiles {
 		logger, err := clog.LoggerFromConfigAsFile(file)
 		if err != nil {
@@ -28,6 +35,11 @@ func initLog() {
 	}
 }
 
+
+
+
+
+//============================================database=================================================>
 // const DB = ":memory:"
 
 const DB = "/tmp/cydex.sqlite3"
@@ -48,6 +60,10 @@ func initDB() (err error) {
 	return
 }
 
+
+
+
+//======================================start server=====================================================>
 func start() {
 	initLog()
 	err := initDB()
@@ -66,16 +82,19 @@ func start() {
 	// add job listen
 	task.TaskMgr.AddObserver(pkg.JobMgr)
 }
-
+//============================================================================================================
 func run_ws() {
-	ws_service := trans.NewWSServer("/ts", 12345, nil)
+	ws_service := trans.NewWSServer("/ts", 12345, nil)//trans "./transfer"
 	ws_service.SetVersion("1.0.0")
 	ws_service.Serve()
 }
 
+
+
+//=====================================================main block============================================>
 func main() {
 	start()
 	clog.Info("start")
 	go run_ws()
-	beego.Run(":8088")
+	beego.Run(":8088")//this from beego project
 }
