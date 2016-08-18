@@ -1,5 +1,5 @@
 package main
-
+//this is really node that manage downloading and upload
 import (
 	"cydex"
 	"cydex/transfer"
