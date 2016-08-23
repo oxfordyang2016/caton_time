@@ -23,11 +23,11 @@ type NodeHandler interface {
 	// OnNodeClose(n *Node)
 }
 
-type Node struct {
+type Node struct {// in the project ,many file exist Node struct
 	Nid      string
 	handler  NodeHandler
 	Token    string
-	seq_lock sync.Mutex
+	seq_lock sync.Mutex//this is likely 
 	seq      uint32
 	rsp_chan chan *transfer.Message
 	ws       *websocket.Conn

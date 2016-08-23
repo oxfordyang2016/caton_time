@@ -28,7 +28,7 @@ func SetupEngine(e *xorm.Engine) error {
 	Engine = e
 	return nil
 }
-
+//this is used to sync tables
 func SyncTables(tables []interface{}) error {
 	for _, t := range tables {
 		if err := Engine.Sync2(t); err != nil {

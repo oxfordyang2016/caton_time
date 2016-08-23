@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+
+//==============log block========================================
 func initLog() {
 	cfgfiles := []string{
 		"/opt/cydex/etc/ts_seelog.xml",
@@ -26,7 +28,7 @@ func initLog() {
 	}
 }
 
-type Application struct {
+type Application struct {//why need so many channel????
 	n                *Node
 	tasks            map[string]*Task
 	new_task_chan    chan *Task
@@ -34,10 +36,11 @@ type Application struct {
 	notify_task_chan chan *transfer.TaskState
 	task_notify_conn *net.UDPConn
 }
-
+//you must think why need application?????there
+//===============new a application==============use make===
 func NewApplication() *Application {
-	a := new(Application)
-	a.tasks = make(map[string]*Task)
+	a := new(Application)//first initialize
+	a.tasks = make(map[string]*Task)//"make" create values
 	a.new_task_chan = make(chan *Task)
 	a.end_task_chan = make(chan string)
 	a.notify_task_chan = make(chan *transfer.TaskState)

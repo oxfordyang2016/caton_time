@@ -1,5 +1,5 @@
 package main
-
+//nowtime,task.go is different from ts-tranfer-task-task.go
 import (
 	"cydex"
 	"cydex/transfer"
@@ -27,7 +27,8 @@ type Event struct {
 	Seq   uint32 `json:"seq"`
 }
 
-type Task struct {
+type Task struct {//why sometime ,it is struct ,but somtime it is pointer
+	//thee all kinds of channel , i donnot understand
 	Tid  string
 	Pid  string
 	Uid  string
@@ -35,12 +36,12 @@ type Task struct {
 	Type int
 	Port int
 	// State           transfer.TaskState
-	UploadTask      *transfer.UploadTaskReq
+	UploadTask      *transfer.UploadTaskReq//cydex transfer
 	DownloadTask    *transfer.DownloadTaskReq
 	FinishedNumSegs uint
-	segs_state      map[string]*transfer.TaskState
-	cur_state       *transfer.TaskState
-	event_chan      chan *Event
+	segs_state      map[string]*transfer.TaskState//segment state
+	cur_state       *transfer.TaskState//what???
+	event_chan      chan *Event//why need it
 
 	over_chan   chan string
 	notify_chan chan *transfer.TaskState
