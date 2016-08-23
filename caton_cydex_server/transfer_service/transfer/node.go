@@ -1,13 +1,15 @@
 package transfer
+
 //in fact,the node is about  to deal with info
+//think again,it is likely about download and upload
 import (
-	"./models"//pwd is transfer.subdir  models
+	"./models" //pwd is transfer.subdir  models
 	"cydex"
 	"cydex/transfer"
 	"errors"
 	"fmt"
 	clog "github.com/cihub/seelog"
-	"github.com/pborman/uuid"//this package generates and inspects uuid           
+	"github.com/pborman/uuid" //this package generates and inspects uuid
 	"golang.org/x/net/websocket"
 	"net"
 	"strings"
@@ -27,20 +29,21 @@ var (
 func init() {
 	NodeMgr = NewNodeManager()
 }
+
 //what is fuck
 
 // 注册Node, 分配tnid
 //from msg get about req infomation
 func registerNode(req *transfer.RegisterReq) (code int, tnid string, err error) {
-	var node *models.Node//THIS NODE IS NOT OTHER NODES
+	var node *models.Node //THIS NODE IS NOT OTHER NODES
 	//in datbase ,lookuping machinecode
 	node, err = models.GetNodeByMachineCode(req.MachineCode)
 	if node != nil {
 		// 已经存在
 		return cydex.OK, node.Nid, err
 	}
-	tnid = uuid.New()//this is to generate a uuid to identify machinecode
-	if _, err = models.CreateNode(req.MachineCode, tnid); err != nil {//register machinecode and tnid
+	tnid = uuid.New()                                                  //this is to generate a uuid to identify machinecode
+	if _, err = models.CreateNode(req.MachineCode, tnid); err != nil { //register machinecode and tnid
 		code = cydex.ErrInnerServer
 		return
 	}
@@ -142,7 +145,7 @@ func NewTimeMessage(msg *transfer.Message) *TimeMessage {
 }
 
 // TransferNode
-//add some stuffs  to models.Node 
+//add some stuffs  to models.Node
 type Node struct {
 	//from tranfer/models
 	*models.Node
@@ -162,19 +165,19 @@ type Node struct {
 	rsp_sem  chan int
 	rsp_lock sync.Mutex
 	rsp_msgs map[uint32]*TimeMessage
-	server   *WSServer//ws
+	server   *WSServer //ws
 	closed   bool
 }
 
 //this node is used to hold some server important info
 func NewNode(ws *websocket.Conn, server *WSServer) *Node {
-	n := new(Node)//it is allocate memory and initiaze it
+	n := new(Node) //it is allocate memory and initiaze it
 	n.server = server
-	n.SetWSConn(ws)//from below
+	n.SetWSConn(ws) //from below
 	// n.rsp_chan = make(chan *TimeMessage)
-	n.rsp_sem = make(chan int)//make a channel that can send ,recieve and deliver a int
+	n.rsp_sem = make(chan int) //make a channel that can send ,recieve and deliver a int
 	//make return  a same type other than pointer
-	n.rsp_msgs = make(map[uint32]*TimeMessage)//in bracket ,it is map type
+	n.rsp_msgs = make(map[uint32]*TimeMessage) //in bracket ,it is map type
 	return n
 }
 
@@ -186,7 +189,7 @@ func (self *Node) Verify(nid, token string) bool {
 func (self *Node) SetWSConn(ws *websocket.Conn) {
 	self.ws = ws
 	if ws != nil {
-		addr := ws.Request().RemoteAddr//for instance:resolve addr 192,168.0.21:90
+		addr := ws.Request().RemoteAddr //for instance:resolve addr 192,168.0.21:90
 		host, _, err := net.SplitHostPort(addr)
 		if err == nil {
 			self.Host = host
@@ -207,15 +210,23 @@ func (self *Node) Update(update_login_time bool) {
 		self.Node.UpdateLoginTime(time.Now())
 	}
 }
+
 //there is node handler   to do somthings accoding to resloved json-struct info
 func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err error) {
 	//transfer from cydex/tranfer
-//this function return many values and format is caution
-	if msg.IsReq() {//msg has been resolved to msg struct
-		rsp = msg.BuildRsp()//msg is infomation by resolved
+	//this function return many values and format is caution
+	if msg.IsReq() { //msg has been resolved to msg struct
+		rsp = msg.BuildRsp() //msg is infomation by resolved
 		//if the info received is request,it will build response
+
+		/*
+		   func NewRspMessage(from, cmd, token string, seq uint32) *Message {
+		   	return NewMessage(from, cmd, token, "rsp", seq)
+		   }
+
+		*/
 		rsp.Rsp.Code = cydex.OK
-//there logic is not starnge
+		//there logic is not starnge
 		//it is likely erorr !!!!!!
 		/*if msg == nil {//if receive info is empty
 			rsp.Rsp.Code = cydex.ErrInvalidParam
@@ -230,7 +241,7 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 		switch lower_cmd {
 		case "register":
 			//nowtime rsp is initialized
-			err = self.handleRegister(msg, rsp)//responding to below register
+			err = self.handleRegister(msg, rsp) //responding to below register
 		case "login":
 			err = self.handleLogin(msg, rsp)
 		case "keepalive":
@@ -244,7 +255,7 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 		if err == nil {
 			self.Update(false)
 		}
-	} else {//warn:it start to use self!
+	} else { //warn:it start to use self!
 		self.rsp_lock.Lock()
 		self.rsp_msgs[msg.Seq] = NewTimeMessage(msg)
 		self.rsp_lock.Unlock()
@@ -253,17 +264,16 @@ func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err e
 	return
 }
 
-
 //according to request command register
 func (self *Node) handleRegister(msg, rsp *transfer.Message) (err error) {
-	if msg.Req == nil || msg.Req.Register == nil {//msg is likely  struct
+	if msg.Req == nil || msg.Req.Register == nil { //msg is likely  struct
 		err = fmt.Errorf("Invalid Param")
 		rsp.Rsp.Code = cydex.ErrInvalidParam
 		rsp.Rsp.Reason = err.Error()
-		return//return this situation explain that  (err error) derectly return back err
+		return //return this situation explain that  (err error) derectly return back err
 	}
 	//many return value,
-	code, tnid, err := registerNode(msg.Req.Register)//from message struct(cydex)
+	code, tnid, err := registerNode(msg.Req.Register) //from message struct(cydex)
 	if code == cydex.OK && tnid != "" {
 		rsp.Rsp.Code = code
 		rsp.Rsp.Register = &transfer.RegisterRsp{
@@ -390,9 +400,16 @@ func (self *Node) SendMessage(msg *transfer.Message) error {
 	if msg == nil {
 		return errors.New("msg is nil")
 	}
-	self.lock.Lock()
-	defer self.lock.Unlock()
-
+	self.lock.Lock()         //thread lock knowleadge
+	defer self.lock.Unlock() //it gurantees that every go threads message get unique seq
+	/*
+		    lock     sync.Mutex
+			seq      uint32
+			// rsp_chan chan *TimeMessage
+			rsp_sem  chan int
+			rsp_lock sync.Mutex
+			closed   bool
+	*/
 	if msg.IsReq() {
 		msg.Seq = self.seq
 		self.seq++
