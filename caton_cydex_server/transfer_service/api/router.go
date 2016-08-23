@@ -68,6 +68,46 @@ func setup() {
 
 	*/
 	//use regular exp http://code.tutsplus.com/tutorials/8-regular-expressions-you-should-know--net-6149
+
+	/*
+					   In order to make the router settings easier, Beego references the router implementation approach found in Sinatra. It supports many router types.
+
+					   beego.Router(“/api/?:id”, &controllers.RController{})
+					   default matching /api/123 :id = 123 can match /api/
+
+					   beego.Router(“/api/:id”, &controllers.RController{})
+					   default matching /api/123 :id = 123 can’t match /api/
+
+					   beego.Router(“/api/:id([0-9]+)“, &controllers.RController{})
+					   Customized regex matching /api/123 :id = 123
+
+					   beego.Router(“/user/:username([\w]+)“, &controllers.RController{})
+					   Regex string matching /user/astaxie :username = astaxie
+
+					   beego.Router(“/download/*.*”, &controllers.RController{})
+					   matching /download/file/api.xml :path= file/api :ext=xml
+
+					   beego.Router(“/download/ceshi/*“, &controllers.RController{})
+					   full matching /download/ceshi/file/api.json :splat=file/api.json
+
+					   beego.Router(“/:id:int”, &controllers.RController{})
+					   int type matching :id is int type. Beego implements ([0-9]+) for you
+
+					   beego.Router(“/:hello:string”, &controllers.RController{})
+					   string type matching :hello is string type. Beego implements ([\w]+) for you
+
+					   beego.Router(“/cms_:id([0-9]+).html”, &controllers.CmsController{})
+					   has prefix regex :id is the regex. matching cms_123.html :id = 123
+
+					   In controller, you can get the variables like this:
+					   this.Ctx.Input.Param(":id")
+		        		this.Ctx.Input.Param(":username")
+			        	this.Ctx.Input.Param(":splat")
+				       this.Ctx.Input.Param(":path")
+				      this.Ctx.Input.Param(":ext")
+
+	*/
+
 	beego.Router("/:uid/pkg/:pid", &c.PkgController{}) //this client 's entrance
 	beego.Router("/:uid/pkg/:pid/:fid", &c.FileController{})
 	beego.Router("/:uid/transfer", &c.TransferController{})

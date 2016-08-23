@@ -136,6 +136,24 @@ type PkgsController struct {
 }
 
 func (self *PkgsController) Get() {
+	/*
+	   // GetString returns the input value by key string or the default value while it's present and input is blank
+	   func (c *Controller) GetString(key string, def ...string) string {
+	   	if v := c.Ctx.Input.Query(key); v != "" {
+	   		return v
+	   	}
+	   	if len(def) > 0 {
+	   		return def[0]
+	   	}
+	   	return ""
+	   }
+
+
+	*/
+
+	//this usage is to get data from url(nowtime)
+	//for example /12345/pkg?query=753845738
+	//it get query
 	query := self.GetString("query")
 	filter := self.GetString("filter")
 	list := self.GetString("list")
