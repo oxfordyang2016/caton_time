@@ -118,6 +118,17 @@ func run_ws() { //run  ws server
 		}
 	*/
 	ws_service.Serve()
+	/*
+			func (s *WSServer) Serve() {
+		//this is to start  a websocket server and prepare to receive info
+			http.Handle(s.url, websocket.Handler(s.connHandle))//it is route(include url
+			//connhandle is from below
+			addr := fmt.Sprintf(":%d", s.port)//generate a addr :567
+			log.Fatal(http.ListenAndServe(addr, nil))
+			//funtion does ,although it is paraments//it is  likely
+			//launch a websocket server
+		}
+	*/
 }
 
 //=====================================================main block============================================>

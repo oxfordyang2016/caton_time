@@ -56,6 +56,14 @@ func NewWSServer(url string, port int, cfg *WSServerConfig) *WSServer {//from  a
 //===================pass WSServer config paraments==================
 //below,they are respectively set all kind of argvs
 func (self *WSServer) SetConfig(cfg *WSServerConfig) {
+	/*
+	type WSServer struct {//server config
+	Version string
+	config  *WSServerConfig//from above
+	url     string
+	port    int
+}
+	*/
 	if cfg != nil {//configure config option
 		self.config = cfg
 	}
@@ -77,10 +85,41 @@ func (s *WSServer) Serve() {
 //===============================deal with Node============
 //this is route's maniputation function
 func (s *WSServer) connHandle(ws *websocket.Conn) {
-	var node *Node//this node define from  another file,why??because they  are from same dir
+
+	//when pass handles  argvs,it will generate a Connect
+	var node *Node//define a var
+	//this node define from  another file,why??
+
+	//because they  are from same dir-->node.go
+	/*
+	type Node struct {
+	//from tranfer/models
+	*models.Node
+
+	// 运行时数据
+	Host  string
+	Token string
+	Info  NodeInfo
+
+	// private
+	// alive_interval uint32
+	login_at time.Time
+	ws       *websocket.Conn
+	lock     sync.Mutex
+	seq      uint32
+	// rsp_chan chan *TimeMessage
+	rsp_sem  chan int
+	rsp_lock sync.Mutex
+	rsp_msgs map[uint32]*TimeMessage
+	server   *WSServer//ws
+	closed   bool
+}
+
+	*/
 	var msgstring string
 	var msg transfer.Message
 	var rsp *transfer.Message
+
 	var err error
 
 	// cleanup
@@ -89,7 +128,7 @@ func (s *WSServer) connHandle(ws *websocket.Conn) {
 			clog.Warnf("Node disconnected: %+v", node)
 			node.Close(true)
 		}
-	}()//what is brackets?
+	}()//what is brackets?it is that donot pass argvs
 
 
 //=============================control websocket connetc================================
@@ -97,6 +136,35 @@ func (s *WSServer) connHandle(ws *websocket.Conn) {
 	//new a node ,but you need to konw it is special.it is used to deal with receive info
 	node = NewNode(ws, s)//ws is websocket connect,s is websocket server
 //nowtime ,node is not likely  downloading and uploading node 
+	//this node is used to hold some server important info
+/*
+func NewNode(ws *websocket.Conn, server *WSServer) *Node {
+	n := new(Node)//it is allocate memory and initiaze it
+	n.server = server//node 's server
+	n.SetWSConn(ws)//from below
+	// n.rsp_chan = make(chan *TimeMessage)
+	n.rsp_sem = make(chan int)//make a channel that can send ,recieve and deliver a int
+	//make return  a same type other than pointer
+	n.rsp_msgs = make(map[uint32]*TimeMessage)//in bracket ,it is map type
+	return n
+=================================================================
+	func (self *Node) SetWSConn(ws *websocket.Conn) {
+	self.ws = ws
+	if ws != nil {
+		addr := ws.Request().RemoteAddr//for instance:resolve addr 192,168.0.21:90
+		//get node ip
+		host, _, err := net.SplitHostPort(addr)
+		if err == nil {
+			self.Host = host
+		}
+
+
+	}
+}
+
+}
+	
+*/
 	for {//keep loop to receive info from tranfer node
 		if err = websocket.Message.Receive(ws, &msgstring); err != nil {
 			log.Print(err)
@@ -104,12 +172,31 @@ func (s *WSServer) connHandle(ws *websocket.Conn) {
 		}
 		clog.Trace(msgstring)
 		//trnsfer json to struct
-		if err = json.Unmarshal([]byte(msgstring), &msg); err != nil {
+		if err = json.Unmarshal([]byte(msgstring), &msg); err != nil {//var msg transfer.Message
 			clog.Warnf("json unmarshal error:%s", err)
 			continue
 		}
 
 		rsp, err = node.HandleMsg(&msg)//now msg is written
+		/*
+//there is node handler   to do somthings accoding to resloved json-struct info
+func (self *Node) HandleMsg(msg *transfer.Message) (rsp *transfer.Message, err error) {
+	//transfer from cydex/tranfer
+//this function return many values and format is caution
+	if msg.IsReq() {//msg has been resolved to msg struct
+		rsp = msg.BuildRsp()//msg is infomation by resolved
+		//if the info received is request,it will build response
+		rsp.Rsp.Code = cydex.OK
+//there logic is not starnge
+		//it is likely erorr !!!!!!
+		/*if msg == nil {//if receive info is empty
+			rsp.Rsp.Code = cydex.ErrInvalidParam
+			rsp.Rsp.Reason = "Invalid Param"
+			return
+		}*/
+	}
+
+		*/
 		if rsp != nil {//warn :it is not err
 			clog.Trace(rsp)
 			node.SendMessage(rsp)//figure out it send to where
