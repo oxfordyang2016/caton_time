@@ -1,6 +1,7 @@
 package transfer
 
 //in fact,the node is about  to deal with info
+//node.go is about struct that dealing info of websocket client
 //think again,it is likely about download and upload
 import (
 	"./models" //pwd is transfer.subdir  models
@@ -400,6 +401,7 @@ func (self *Node) SendMessage(msg *transfer.Message) error {
 	if msg == nil {
 		return errors.New("msg is nil")
 	}
+	//about lock , i have no time to get it currentlly
 	self.lock.Lock()         //thread lock knowleadge
 	defer self.lock.Unlock() //it gurantees that every go threads message get unique seq
 	/*
