@@ -68,6 +68,7 @@ func start() {
 		panic("Shutdown")
 	}
 	// 设置拆包器
+	//"./pkg"
 	pkg.SetUnpacker(pkg.NewDefaultUnpacker(50*1024*1024, 25))
 	// 从数据库导入track
 	pkg.JobMgr.LoadTracks()
@@ -81,13 +82,47 @@ func start() {
 
 //================================ws server setting============================================================================
 func run_ws() { //run  ws server
+	/*
+		type WSServer struct {//server config
+			Version string
+			config  *WSServerConfig//from above
+			url     string
+			port    int
+		}
+		//finish almost option unless version
+		//there, pass arg ,initial a wsserver ,if server config is empty ,the funtion  will pass
+		//defualt args
+		func NewWSServer(url string, port int, cfg *WSServerConfig) *WSServer {//from  above
+			if cfg == nil {
+				cfg = &DefaultConfig
+			}
+			//even if it lack  version it is senseless
+			return &WSServer{
+				config: cfg,
+				url:    url,
+				port:   port,
+			}
+		}
+	*/
 	ws_service := trans.NewWSServer("/ts", 12345, nil) //trans "./transfer"
 	ws_service.SetVersion("1.0.0")
+	/*
+			func (s *WSServer) Serve() {
+		//this is to start  a websocket server and prepare to receive info
+			http.Handle(s.url, websocket.Handler(s.connHandle))//it is route(include url
+			//connhandle is from below
+			addr := fmt.Sprintf(":%d", s.port)//generate a addr :567
+			log.Fatal(http.ListenAndServe(addr, nil))
+			//funtion does ,although it is paraments//it is  likely
+			//launch a websocket server
+		}
+	*/
 	ws_service.Serve()
 }
 
 //=====================================================main block============================================>
 /*=====goroutines====
+A goroutine is a lightweight thread of execution.
 package main
 import "fmt"
 func f(from string) {
@@ -124,8 +159,9 @@ done
 
 */
 func main() {
-	start()
-	clog.Info("start")
-	go run_ws()
+	start()            //start log,pkg tools,init database
+	clog.Info("start") //start log
+	go run_ws()        //run  ws server
 	beego.Run(":8088") //this from beego project
+	//beego is a http server
 }
