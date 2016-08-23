@@ -82,11 +82,14 @@ func start() {
 
 //================================ws server setting============================================================================
 func run_ws() { //run  ws server
+
+	//wsserver instru->https://github.com/oxfordyang2016/caton_time/blob/master/images/wsserverinstru.jpg
+
 	/*
 		type WSServer struct {//server config
 			Version string
 			config  *WSServerConfig//from above
-			url     string
+			url     string//design all kinds o url to deal many cases
 			port    int
 		}
 		//finish almost option unless version
