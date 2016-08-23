@@ -67,8 +67,8 @@ func setup() {
 	   }
 
 	*/
-
-	beego.Router("/:uid/pkg/:pid", &c.PkgController{})
+	//use regular exp http://code.tutsplus.com/tutorials/8-regular-expressions-you-should-know--net-6149
+	beego.Router("/:uid/pkg/:pid", &c.PkgController{}) //this client 's entrance
 	beego.Router("/:uid/pkg/:pid/:fid", &c.FileController{})
 	beego.Router("/:uid/transfer", &c.TransferController{})
 }
