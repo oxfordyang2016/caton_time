@@ -38,8 +38,10 @@ func (c *MainController) Get() {
 func setup() {
 	// TODO 正则限制长度
 	beego.Router("/:uid/pkg", &c.PkgsController{})ss
-	//url========>/3627327/pkg/?query==547543 will be captured (according to mrs ran)
-
+	//url========>/3627327/pkg?query==547543 will be captured (according to mrs ran)
+//url=====>/https://www.google.com/search?q=shanghai&oq=shanghai&aqs=chrome..69i57j69i60l2j69i65l2j69i59.1549j0j7&sourceid=chrome&ie=UTF-8
+//	GET /tickets?fields=id,subject,customer_name,updated_at&state=open&sort=-updated_at
+//http://vinaysahni.us6.list-manage.com/subscribe/post?u=005ede9b44df2622ce536ab88&id=8edc074683
 	/*
                                 |
                                 |
