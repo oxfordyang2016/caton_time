@@ -10,12 +10,18 @@ import (
 about controller
 beego.Router("/hello", &controllers.Controller1{})
           |
-          |
+          v
+          v
+          v
+          v
 type MainController struct {
 	beego.Controller
 }
           |
-          |
+          v
+          v
+          v
+          v
 func (c *MainController) Get() {
 	// c.Data["Website"] = "beego.me"
 	// c.Data["Email"] = "astaxie@gmail.com"
@@ -117,7 +123,8 @@ func setup() {
 
 //now time, i have a doubt that what json does????
 //because all argv pas to api ,even if a priod of messages
-//
+//about json ,there is something that when  all argvs was passed to url,and then ,build conenction
+//with server ,server deal with request ,and send json message to client
 func init() {
 	setup()
 }
