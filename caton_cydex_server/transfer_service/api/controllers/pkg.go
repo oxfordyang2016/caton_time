@@ -171,8 +171,95 @@ func (self *PkgsController) Get() {
 			self.getActive()
 		}
 	case "sender":
-		// 3.1
+		// 3.1----------------------------------------------->sender
 		self.getJobs(cydex.UPLOAD)
+	/*
+				          cydex.define.go
+				            |
+				            |
+				            v
+					const (
+					UPLOAD   = 1
+					DOWNLOAD = 2
+
+					ENCRYPTION_TYPE_NONE   = 0
+					ENCRYPTION_TYPE_AES128 = 1
+					ENCRYPTION_TYPE_AES256 = 2
+
+					PKG_FLAG_DELETE = 0
+					PKG_FLAG_OTHER  = 1
+
+					TRANSFER_STATE_IDLE  = 0
+					TRANSFER_STATE_DOING = 1
+					TRANSFER_STATE_DONE  = 2
+					TRANSFER_STATE_PAUSE = 3
+
+					FTYPE_DIR  = 0
+					FTYPE_FILE = 1
+				)
+
+					            |
+					            |
+					            v
+						func (self *PkgsController) getJobs(typ int) {
+						uid := self.GetString(":uid")
+						page := new(cydex.Pagination)
+						|
+						|
+						v
+
+						type Pagination struct {
+				            PageSize int
+		            		PageNum  int}
+		            	|
+			            |
+			            v
+						page.PageSize, _ = self.GetInt("page_size")//get url int var
+						page.PageNum, _ = self.GetInt("page_num")
+						if !page.Verify() {
+							page = nil
+						}
+
+						rsp := new(cydex.QueryPkgRsp)
+						rsp.Error = cydex.OK
+
+						defer func() {
+							if rsp.Pkgs == nil {
+								rsp.Pkgs = make([]*cydex.Pkg, 0)
+							}
+							self.Data["json"] = rsp
+							self.ServeJSON()
+						}()
+
+						// admin返回空
+						if self.UserLevel == cydex.USER_LEVEL_ADMIN {
+							return
+						}
+
+						// 按照uid和type得到和用户相关的jobs
+						jobs, err := pkg_model.GetJobsByUid(uid, typ, page)
+						if err != nil {
+							// error
+							rsp.Error = cydex.ErrInnerServer
+							return
+						}
+						for _, job := range jobs {
+							if err = job.GetPkg(true); err != nil {
+								// error
+								rsp.Error = cydex.ErrInnerServer
+								return
+							}
+
+							pkg_c, err := aggregate(job.Pkg)
+							if err != nil {
+								rsp.Error = cydex.ErrInnerServer
+								return
+							}
+
+							rsp.Pkgs = append(rsp.Pkgs, pkg_c)
+						}
+					}
+	*/
 	case "receiver":
 		// 3.1
 		self.getJobs(cydex.DOWNLOAD)
@@ -247,7 +334,7 @@ func (self *PkgsController) getAllJobs() {
 func (self *PkgsController) getJobs(typ int) {
 	uid := self.GetString(":uid")
 	page := new(cydex.Pagination)
-	page.PageSize, _ = self.GetInt("page_size")
+	page.PageSize, _ = self.GetInt("page_size") //get url int var
 	page.PageNum, _ = self.GetInt("page_num")
 	if !page.Verify() {
 		page = nil
