@@ -8,7 +8,15 @@ import (
 )
 
 /*
-about controller
+http client
+http://192.168.0.68:8080/5643/pkg?query=86mskksjkdsfjdsfkkse&yang="live"
+          |
+          |
+          |
+          |
+          V
+
+about router
 beego.Router("/hello", &controllers.Controller1{})
           |
           v
