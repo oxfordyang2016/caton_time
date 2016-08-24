@@ -182,6 +182,18 @@ func (self *PkgsController) Get() {
 	}
 }
 
+/*
+
+http beego write data to conenction
+           |
+           |
+           v
+func (c *Controller1) Get() {
+c.Ctx.WriteString(query)
+}
+
+*/
+
 func (self *PkgsController) getAllJobs() {
 	// uid := self.GetString(":uid")
 	page := new(cydex.Pagination)
