@@ -1,5 +1,5 @@
 package api
-
+//http://aslanbakan.com/en/blog/33-essential-sublime-text-plugins-for-all-developers/
 //it is likely http server api
 import (
 	c "./controllers"
@@ -37,10 +37,15 @@ func (c *MainController) Get() {
 
 func setup() {
 	// TODO 正则限制长度
-	beego.Router("/:uid/pkg", &c.PkgsController{})
+	beego.Router("/:uid/pkg", &c.PkgsController{})ss
 	//url========>/3627327/pkg/?query==547543 will be captured (according to mrs ran)
 
 	/*
+                                |
+                                |
+                                |
+                                v 
+                                v
 	   type PkgsController struct {
 	   	BaseController
 	   }
@@ -73,6 +78,45 @@ func setup() {
 	   		self.getAllJobs()
 	   	}
 	   }
+
+                |
+                |----------->switch
+                v
+                v
+
+package main
+import "fmt"
+import "time"
+func main() {
+                    i := 2
+    fmt.Print("write ", i, " as ")
+    switch i {
+    case 1:
+        fmt.Println("one")
+    case 2:
+        fmt.Println("two")
+    case 3:
+        fmt.Println("three")
+    }
+  switch time.Now().Weekday() {
+    case time.Saturday, time.Sunday:
+        fmt.Println("it's the weekend")
+    default:
+        fmt.Println("it's a weekday")
+    }
+     t := time.Now()
+    switch {
+    case t.Hour() < 12:
+        fmt.Println("it's before noon")
+    default:
+        fmt.Println("it's after noon")
+    }
+}
+
+$ go run switch.go 
+write 2 as two
+it's the weekend
+it's before noon
 
 	*/
 	//use regular exp http://code.tutsplus.com/tutorials/8-regular-expressions-you-should-know--net-6149
