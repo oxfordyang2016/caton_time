@@ -8,40 +8,49 @@ import (
 )
 
 /*
-http client
-http://192.168.0.68:8080/5643/pkg?query=86mskksjkdsfjdsfkkse&yang="live"
-          |
-          |
-          |
-          |
-          V
 
-about router
-beego.Router("/hello", &controllers.Controller1{})
-          |
-          v
-          v
-          v
-          v
-type MainController struct {
-	beego.Controller
-}
-          |
-          v
-          v
-          v
-          v
-func (c *MainController) Get() {
-	// c.Data["Website"] = "beego.me"
-	// c.Data["Email"] = "astaxie@gmail.com"
-	// c.TplName = "index.tpl"
-	// fmt.Println(c.Data["Email"])
-	// c.Data["Json"]="======================================>"
-	// fmt.Println(c.Data["Json"])
+	code ----------->quickstart
 
-	c.Ctx.WriteString("hello,world")//write data to connect
-}
+		http client
+	http://192.168.0.68:8080/5643/pkg?query="hallo"&yang="live"
+	          |
+	          |
+	          |
+	          |
+	          v
+		   func init() {
 
+		   	beego.Router("/hello", &controllers.Controller1{})
+		   	beego.Router("/login", &controllers.MainController{})
+		   	beego.Router("/:uid/pkg", &controllers.Controller1{})
+
+		   	beego.InsertFilter("/*", beego.FinishRouter, FilterUser, false)
+		   }
+		                     |
+		                     |
+		                     |
+		                     v
+		                     v
+		   func (c *Controller1) Get() {
+		   	// c.Data["Website"] = "beego.me"
+		   	// c.Data["Email"] = "astaxie@gmail.com"
+		   	// c.TplName = "index.tpl"
+		   	// fmt.Println(c.Data["Email"])
+		   	// c.Data["Json"]="======================================>"
+		   	// fmt.Println(c.Data["Json"])
+		   	query := c.GetString("query")
+		   	query1 := c.GetString("yang")
+		   	//fmt.Println(get)
+		   	fmt.Println(query)
+		   	fmt.Println(query1)
+		   	c.Ctx.WriteString(query)
+		   }
+	                         |
+	                         |
+	                         |
+	                         v
+
+	       http client return  "hallo"
 */
 
 func setup() {
@@ -52,42 +61,6 @@ func setup() {
 	//	GET /tickets?fields=id,subject,customer_name,updated_at&state=open&sort=-updated_at
 	//http://vinaysahni.us6.list-manage.com/subscribe/post?u=005ede9b44df2622ce536ab88&id=8edc074683
 
-	/*
-	                         |
-	                         |
-	                         |
-	                         v
-	                         v
-	                         v
-	   func init() {
-
-	   	beego.Router("/hello", &controllers.Controller1{})
-	   	beego.Router("/login", &controllers.MainController{})
-	   	beego.Router("/:uid/pkg", &controllers.Controller1{})
-
-	   	beego.InsertFilter("/*", beego.FinishRouter, FilterUser, false)
-	   }
-	                     |
-	                     |
-	                     |
-	                     v
-	                     v
-	   func (c *Controller1) Get() {
-	   	// c.Data["Website"] = "beego.me"
-	   	// c.Data["Email"] = "astaxie@gmail.com"
-	   	// c.TplName = "index.tpl"
-	   	// fmt.Println(c.Data["Email"])
-	   	// c.Data["Json"]="======================================>"
-	   	// fmt.Println(c.Data["Json"])
-	   	query := c.GetString("query")
-	   	query1 := c.GetString("yang")
-	   	//fmt.Println(get)
-	   	fmt.Println(query)
-	   	fmt.Println(query1)
-	   	c.Ctx.WriteString(query)
-	   }
-
-	*/
 	/*
 		                                |
 		                                |
