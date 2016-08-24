@@ -161,7 +161,7 @@ func (self *PkgsController) Get() {
 	// sec 3.2 in api doc
 	if list == "list" {
 		self.getLitePkgs()
-		return
+		return //it is likely ,once return ,function will stop
 	}
 
 	switch query {

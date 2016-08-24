@@ -32,6 +32,8 @@ func (c *MainController) Get() {
 func setup() {
 	// TODO 正则限制长度
 	beego.Router("/:uid/pkg", &c.PkgsController{})
+	//url========>/3627327/pkg/?query==547543 will be captured (according to mrs ran)
+
 	/*
 	   type PkgsController struct {
 	   	BaseController
@@ -113,6 +115,9 @@ func setup() {
 	beego.Router("/:uid/transfer", &c.TransferController{})
 }
 
+//now time, i have a doubt that what json does????
+//because all argv pas to api ,even if a priod of messages
+//
 func init() {
 	setup()
 }
