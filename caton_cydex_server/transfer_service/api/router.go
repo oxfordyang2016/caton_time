@@ -1,4 +1,5 @@
 package api
+
 //http://aslanbakan.com/en/blog/33-essential-sublime-text-plugins-for-all-developers/
 //it is likely http server api
 import (
@@ -37,88 +38,125 @@ func (c *MainController) Get() {
 
 func setup() {
 	// TODO 正则限制长度
-	beego.Router("/:uid/pkg", &c.PkgsController{})ss
+	beego.Router("/:uid/pkg", &c.PkgsController{})
 	//url========>/3627327/pkg?query==547543 will be captured (according to mrs ran)
-//url=====>/https://www.google.com/search?q=shanghai&oq=shanghai&aqs=chrome..69i57j69i60l2j69i65l2j69i59.1549j0j7&sourceid=chrome&ie=UTF-8
-//	GET /tickets?fields=id,subject,customer_name,updated_at&state=open&sort=-updated_at
-//http://vinaysahni.us6.list-manage.com/subscribe/post?u=005ede9b44df2622ce536ab88&id=8edc074683
+	//url=====>/https://www.google.com/search?q=shanghai&oq=shanghai&aqs=chrome..69i57j69i60l2j69i65l2j69i59.1549j0j7&sourceid=chrome&ie=UTF-8
+	//	GET /tickets?fields=id,subject,customer_name,updated_at&state=open&sort=-updated_at
+	//http://vinaysahni.us6.list-manage.com/subscribe/post?u=005ede9b44df2622ce536ab88&id=8edc074683
+
 	/*
-                                |
-                                |
-                                |
-                                v 
-                                v
-	   type PkgsController struct {
-	   	BaseController
+	                         |
+	                         |
+	                         |
+	                         v
+	                         v
+	                         v
+	   func init() {
+
+	   	beego.Router("/hello", &controllers.Controller1{})
+	   	beego.Router("/login", &controllers.MainController{})
+	   	beego.Router("/:uid/pkg", &controllers.Controller1{})
+
+	   	beego.InsertFilter("/*", beego.FinishRouter, FilterUser, false)
+	   }
+	                     |
+	                     |
+	                     |
+	                     v
+	                     v
+	   func (c *Controller1) Get() {
+	   	// c.Data["Website"] = "beego.me"
+	   	// c.Data["Email"] = "astaxie@gmail.com"
+	   	// c.TplName = "index.tpl"
+	   	// fmt.Println(c.Data["Email"])
+	   	// c.Data["Json"]="======================================>"
+	   	// fmt.Println(c.Data["Json"])
+	   	query := c.GetString("query")
+	   	query1 := c.GetString("yang")
+	   	//fmt.Println(get)
+	   	fmt.Println(query)
+	   	fmt.Println(query1)
+	   	c.Ctx.WriteString(query)
 	   }
 
-	   func (self *PkgsController) Get() {
-	   	query := self.GetString("query")
-	   	filter := self.GetString("filter")
-	   	list := self.GetString("list")
+	*/
+	/*
+		                                |
+		                                |
+		                                |
+		                                v
+		                                v
+			   type PkgsController struct {
+			   	BaseController
+			   }
 
-	   	// sec 3.2 in api doc
-	   	if list == "list" {
-	   		self.getLitePkgs()
-	   		return
-	   	}
+			   func (self *PkgsController) Get() {
+			   	query := self.GetString("query")
+			   	filter := self.GetString("filter")
+			   	list := self.GetString("list")
 
-	   	switch query {
-	   	case "all":
-	   		if filter == "change" {
-	   			// sec 3.1.2 in api doc
-	   			self.getActive()
-	   		}
-	   	case "sender":
-	   		// 3.1
-	   		self.getJobs(cydex.UPLOAD)
-	   	case "receiver":
-	   		// 3.1
-	   		self.getJobs(cydex.DOWNLOAD)
-	   	case "admin":
-	   		// 3.1
-	   		self.getAllJobs()
-	   	}
-	   }
+			   	// sec 3.2 in api doc
+			   	if list == "list" {
+			   		self.getLitePkgs()
+			   		return
+			   	}
 
-                |
-                |----------->switch
-                v
-                v
+			   	switch query {
+			   	case "all":
+			   		if filter == "change" {
+			   			// sec 3.1.2 in api doc
+			   			self.getActive()
+			   		}
+			   	case "sender":
+			   		// 3.1
+			   		self.getJobs(cydex.UPLOAD)
+			   	case "receiver":
+			   		// 3.1
+			   		self.getJobs(cydex.DOWNLOAD)
+			   	case "admin":
+			   		// 3.1
+			   		self.getAllJobs()
+			   	}
+			   }
 
-package main
-import "fmt"
-import "time"
-func main() {
-                    i := 2
-    fmt.Print("write ", i, " as ")
-    switch i {
-    case 1:
-        fmt.Println("one")
-    case 2:
-        fmt.Println("two")
-    case 3:
-        fmt.Println("three")
-    }
-  switch time.Now().Weekday() {
-    case time.Saturday, time.Sunday:
-        fmt.Println("it's the weekend")
-    default:
-        fmt.Println("it's a weekday")
-    }
-     t := time.Now()
-    switch {
-    case t.Hour() < 12:
-        fmt.Println("it's before noon")
-    default:
-        fmt.Println("it's after noon")
-    }
-}
+		                |
+		                |----------->switch
+		                v
+		                v
 
-$ go run switch.go 
-write 2 as two
-it's the weekend
-it's before noon
+		package main
+		import "fmt"
+		import "time"
+		func main() {
+		                    i := 2
+		    fmt.Print("write ", i, " as ")
+		    switch i {
+		    case 1:
+		        fmt.Println("one")
+		    case 2:
+		        fmt.Println("two")
+		    case 3:
+		        fmt.Println("three")
+		    }
+		  switch time.Now().Weekday() {
+		    case time.Saturday, time.Sunday:
+		        fmt.Println("it's the weekend")
+		    default:
+		        fmt.Println("it's a weekday")
+		    }
+		     t := time.Now()
+		    switch {
+		    case t.Hour() < 12:
+		        fmt.Println("it's before noon")
+		    default:
+		        fmt.Println("it's after noon")
+		    }
+		}
+
+		$ go run switch.go
+		write 2 as two
+		it's the weekend
+		it's before noon
 
 	*/
 	//use regular exp http://code.tutsplus.com/tutorials/8-regular-expressions-you-should-know--net-6149
