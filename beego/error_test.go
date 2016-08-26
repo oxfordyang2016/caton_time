@@ -50,6 +50,7 @@ func TestErrorCode_01(t *testing.T) {
 		handler.ServeHTTP(w, r)
 		code, _ := strconv.Atoi(k)
 		if w.Code != code {
+
 			t.Fail()
 		}
 		if !strings.Contains(string(w.Body.Bytes()), http.StatusText(code)) {
