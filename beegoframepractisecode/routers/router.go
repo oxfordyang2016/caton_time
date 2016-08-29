@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-
+	beego.Router("/api/v1/login", &controllers.Controller2{})
 	beego.Router("/hello", &controllers.Controller1{})
 	beego.Router("/login", &controllers.MainController{})
 	beego.Router("/:uid/pkg", &controllers.Controller1{})
