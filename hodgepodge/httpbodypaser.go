@@ -55,6 +55,28 @@ func test(rw http.ResponseWriter, req *http.Request) {
 	log.Println(t.Test)
 //=====================================request header parser=============>
 	fmt.Println(formatRequest(req))
+
+/*
+
+package main
+
+import (
+	"io"
+	"net/http"
+)
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "Hello world!")
+}
+
+func main() {
+	http.HandleFunc("/", hello)
+	http.ListenAndServe(":8000", nil)
+}
+
+*/
+
+
 }
 
 func main() {
