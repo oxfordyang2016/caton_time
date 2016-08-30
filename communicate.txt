@@ -2,3 +2,4 @@ another git process seems to be running in this repository
 http://stackoverflow.com/questions/38004148/another-git-process-seems-to-be-running-in-this-repository
 https://github.com/oxfordyang2016/caton_time/blob/master/beegoframepractisecode/main.go
 https://github.com/oxfordyang2016/caton_time/blob/master/hodgepodge/httpbodypaser.go
+http://thenewstack.io/building-a-web-server-in-go/
