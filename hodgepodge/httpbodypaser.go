@@ -21,15 +21,17 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"io"
-
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"reflect"
 	"strings"
 	//"time"
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+	//"database/sql"
+	//_ "github.com/go-sql-driver/mysql"
+	"github.com/ziutek/mymysql/mysql"
+	_ "github.com/ziutek/mymysql/native" // Native engine
 )
 
 type test_struct struct {
@@ -42,15 +44,69 @@ type Response struct {
 
 func test(rw http.ResponseWriter, req *http.Request) {
 	//------------------------------------------database connettion----------------------------
-	db, err := sql.Open("mysql",
-		"root:123456@tcp(192.168.0.81:3306)/hello") //first configure a database
-	if err != nil {
-		fmt.Println("database error")
-		log.Fatal(err)
-	}
-	fmt.Println("database connect success")
-	defer db.Close()
+	/*
+		db, err := sql.Open("mysql",
+			"root:123456@tcp(192.168.0.81:3306)/hello") //first configure a database
+		if err != nil {
+			fmt.Println("database error")
+			log.Fatal(err)
+		}
+		fmt.Println("database connect success")
+
+		stmtOut, err := db.Prepare("SELECT * FROM  potluck WHERE number = ?")
+
+		var name string
+		err = stmtOut.QueryRow(2).Scan(&name) // WHERE number = 13
+		fmt.Println("what is fuck")
+		if err != nil {
+			panic(err.Error()) // proper error handling instead of panic in your app
+			fmt.Println("erro occur")
+		}
+		fmt.Printf("anme ================>:", name)
+		defer stmtOut.Close()
+		defer db.Close()
+	*/
 	//---------------------------------------------------------------------------------------------------
+	db := mysql.New("tcp", "", "192.168.0.81:3306", root, 123456, hello)
+
+	err := db.Connect()
+	if err != nil {
+		panic(err)
+	}
+
+	rows, res, err := db.Query("select * from X where id > %d", 1)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, row := range rows {
+		for _, col := range row {
+			if col == nil {
+				// col has NULL value
+				fmt.Println("nil")
+			} else {
+				// Do something with text in col (type []byte)
+				fmt.Println("jsj")
+			}
+		}
+		// You can get specific value from a row
+		val1 := row[1].([]byte)
+		fmt.Println(val1)
+
+		// You can use it directly if conversion isn't needed
+		os.Stdout.Write(val1)
+
+		// You can get converted value
+		// number := row.Int(0)      // Zero value
+		// str := row.Str(1)         // First value
+		// bignum := row.MustUint(2) // Second value
+
+		// // You may get values by column name
+		// first := res.Map("FirstColumn")
+		// second := res.Map("SecondColumn")
+		// val1, val2 := row.Int(first), row.Str(second)
+	}
+	//-----------------------------------------------------------------
 	body, _ := ioutil.ReadAll(req.Body)
 	//header, _ := ioutil.ReadAll(req.Header)
 	fmt.Println(reflect.TypeOf(body))

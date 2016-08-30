@@ -7,3 +7,4 @@ http://stackoverflow.com/questions/8270816/converting-go-struct-to-json
 http://stackoverflow.com/questions/36236109/go-and-jwt-simple-authentication
 https://www.linode.com/docs/databases/mysql/how-to-install-mysql-on-centos-6
 https://www.digitalocean.com/community/tutorials/a-basic-mysql-tutorial
+http://stackoverflow.com/questions/8348506/grant-remote-access-of-mysql-database-from-any-ip-address
