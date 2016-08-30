@@ -4,3 +4,4 @@ https://github.com/oxfordyang2016/caton_time/blob/master/beegoframepractisecode/
 https://github.com/oxfordyang2016/caton_time/blob/master/hodgepodge/httpbodypaser.go
 http://thenewstack.io/building-a-web-server-in-go/
 http://stackoverflow.com/questions/8270816/converting-go-struct-to-json
+http://stackoverflow.com/questions/36236109/go-and-jwt-simple-authentication
