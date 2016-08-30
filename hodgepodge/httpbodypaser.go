@@ -24,14 +24,14 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+	//"os"
 	"reflect"
 	"strings"
 	//"time"
-	//"database/sql"
-	//_ "github.com/go-sql-driver/mysql"
-	"github.com/ziutek/mymysql/mysql"
-	_ "github.com/ziutek/mymysql/native" // Native engine
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+	//"github.com/ziutek/mymysql/mysql"
+	//_ "github.com/ziutek/mymysql/native" // Native engine
 )
 
 type test_struct struct {
@@ -44,68 +44,65 @@ type Response struct {
 
 func test(rw http.ResponseWriter, req *http.Request) {
 	//------------------------------------------database connettion----------------------------
-	/*
-		db, err := sql.Open("mysql",
-			"root:123456@tcp(192.168.0.81:3306)/hello") //first configure a database
-		if err != nil {
-			fmt.Println("database error")
-			log.Fatal(err)
-		}
-		fmt.Println("database connect success")
 
-		stmtOut, err := db.Prepare("SELECT * FROM  potluck WHERE number = ?")
+	db, err := sql.Open("mysql", "root:123456@tcp(192.168.0.81:3306)/hello") //first configure a database
+	//db, err := sql.Open("mysql", "astaxie:astaxie@/test?charset=utf8")
+	checkErr(err)
 
-		var name string
-		err = stmtOut.QueryRow(2).Scan(&name) // WHERE number = 13
-		fmt.Println("what is fuck")
-		if err != nil {
-			panic(err.Error()) // proper error handling instead of panic in your app
-			fmt.Println("erro occur")
-		}
-		fmt.Printf("anme ================>:", name)
-		defer stmtOut.Close()
-		defer db.Close()
-	*/
-	//---------------------------------------------------------------------------------------------------
-	db := mysql.New("tcp", "", "192.168.0.81:3306", root, 123456, hello)
+	// insert
+	stmt, err := db.Prepare("INSERT userinfo SET username=?,departname=?,created=?")
+	checkErr(err)
 
-	err := db.Connect()
-	if err != nil {
-		panic(err)
+	res, err := stmt.Exec("yang", "sj", "2012-12-09")
+	checkErr(err)
+
+	id, err := res.LastInsertId()
+	checkErr(err)
+
+	fmt.Println(id)
+	// update
+	stmt, err = db.Prepare("update userinfo set username=? where uid=?")
+	checkErr(err)
+
+	res, err = stmt.Exec("astaxieupdate", id)
+	checkErr(err)
+
+	affect, err := res.RowsAffected()
+	checkErr(err)
+
+	fmt.Println(affect)
+
+	// query
+	rows, err := db.Query("SELECT * FROM userinfo")
+	checkErr(err)
+
+	for rows.Next() {
+		var uid int
+		var username string
+		var department string
+		var created string
+		err = rows.Scan(&uid, &username, &department, &created)
+		checkErr(err)
+		fmt.Println(uid)
+		fmt.Println(username)
+		fmt.Println(department)
+		fmt.Println(created)
 	}
 
-	rows, res, err := db.Query("select * from X where id > %d", 1)
-	if err != nil {
-		panic(err)
-	}
+	// delete
+	stmt, err = db.Prepare("delete from userinfo where uid=?")
+	checkErr(err)
 
-	for _, row := range rows {
-		for _, col := range row {
-			if col == nil {
-				// col has NULL value
-				fmt.Println("nil")
-			} else {
-				// Do something with text in col (type []byte)
-				fmt.Println("jsj")
-			}
-		}
-		// You can get specific value from a row
-		val1 := row[1].([]byte)
-		fmt.Println(val1)
+	res, err = stmt.Exec(id)
+	checkErr(err)
 
-		// You can use it directly if conversion isn't needed
-		os.Stdout.Write(val1)
+	affect, err = res.RowsAffected()
+	checkErr(err)
 
-		// You can get converted value
-		// number := row.Int(0)      // Zero value
-		// str := row.Str(1)         // First value
-		// bignum := row.MustUint(2) // Second value
+	fmt.Println(affect)
 
-		// // You may get values by column name
-		// first := res.Map("FirstColumn")
-		// second := res.Map("SecondColumn")
-		// val1, val2 := row.Int(first), row.Str(second)
-	}
+	db.Close()
+
 	//-----------------------------------------------------------------
 	body, _ := ioutil.ReadAll(req.Body)
 	//header, _ := ioutil.ReadAll(req.Header)
@@ -178,7 +175,7 @@ func test(rw http.ResponseWriter, req *http.Request) {
 
 func main() {
 	http.HandleFunc("/api/v1/login", test)
-	log.Fatal(http.ListenAndServe(":8082", nil))
+	log.Fatal(http.ListenAndServe(":8083", nil))
 
 }
 
@@ -220,4 +217,9 @@ func ExampleNew(mySigningKey []byte) (string, error) {
 	// Sign and get the complete encoded token as a string
 	tokenString, err := token.SignedString(mySigningKey)
 	return tokenString, err
+}
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
