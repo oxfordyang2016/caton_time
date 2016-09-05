@@ -35,6 +35,15 @@ import (
 	//_ "github.com/ziutek/mymysql/native" // Native engine
 )
 
+/* about http's header
+1.
+about http header,header's filed is string ,even though,it is
+the type: id:643888348
+2.
+in server ,resolving http header to all kinds of type is another thing
+
+*/
+
 type test_struct struct {
 	Test string
 }
@@ -43,8 +52,42 @@ type Response struct {
 	Status int
 }
 
+var (
+	first_token string
+)
+
 //-----------------------------------------------------------controller------------------------------------------
 func report(rw http.ResponseWriter, req *http.Request) {
+	var authorization string
+
+	for name, headers := range req.Header {
+		name := strings.ToLower(name)
+		for _, h := range headers {
+			//fmt.Println("name++++", name)
+
+			if name == "authorization" {
+				authorization = h
+			}
+
+		}
+	}
+	//------------------------------split string----------
+	//http://www.dotnetperls.com/split-go
+	//result := strings.Split(authorization, " ")
+
+	// Display all elements.
+	// for i := range result {
+	// 	fmt.Println(result[i])
+	// }
+	//split := result[1]
+	final_token := "Bearer" + " " + first_token
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=", final_token)
+	fmt.Println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", authorization)
+
+	if authorization != final_token {
+		io.WriteString(rw, "jwt eror")
+		return
+	}
 
 	io.WriteString(rw, "report ok") //write to body
 	fmt.Println(formatRequest(req))
@@ -69,6 +112,7 @@ func report(rw http.ResponseWriter, req *http.Request) {
 			if name == "content-type" {
 				content_type = h
 			}
+
 			//fmt.Println("content+++", h)
 			//request := append(request, fmt.Sprintf(name, h))
 		}
@@ -89,8 +133,11 @@ func report(rw http.ResponseWriter, req *http.Request) {
 	checkErr(err)
 	db.Close()
 }
-
+func test2(rw http.ResponseWriter, req *http.Request) {
+	io.WriteString(rw, "hallo") //write to body
+}
 func test(rw http.ResponseWriter, req *http.Request) {
+	//io.WriteString(rw, "hallo") //write to body
 	//data := []byte("hello")
 	//a := fmt.Sprintf("%x", md5.Sum(data))
 	//about passwd's computing method:password=MD5(MD5(sn):secrect:date)
@@ -138,22 +185,33 @@ func test(rw http.ResponseWriter, req *http.Request) {
 			}
 			//fmt.Println("content+++", h)
 			//request := append(request, fmt.Sprintf(name, h))
+			fmt.Println("name++++", name)
+			fmt.Println("content+++", h)
 		}
 	}
 	//----------md5 verify login-----------------------
 	snk := []byte(sn)
 	md51 := fmt.Sprintf("%x", md5.Sum(snk)) //lowcase
+	//fmt.Print("snk........", snk, "     after computer.....", md51)
 	//about passwd's computing method:password=MD5(MD5(sn):secrect:date)
 	//fmt.Println(reflect.TypeOf(string(a)))
 	k := md51 + "caton" + date
 	data1 := []byte(k)
 	verify_data := fmt.Sprintf("%x", md5.Sum(data1))
+	if verify_data == password {
+		fmt.Println("string ok--")
+
+		//return
+	}
 	if verify_data != password {
-		io.WriteString(rw, "login password error") //write to body
+		fmt.Println("string no--")
+		io.WriteString(rw, "password error")
 		return
 	}
+	fmt.Println(reflect.TypeOf(verify_data))
+	fmt.Println(reflect.TypeOf(password))
 	checkErr(err)
-	//---------------------------------------------------------------
+	//-----------------------write who to databases table who----------------------------------------
 	res, err := stmt.Exec(sn, model, version)
 	checkErr(err)
 
@@ -223,11 +281,12 @@ func test(rw http.ResponseWriter, req *http.Request) {
 	mySigningKey := "caton"
 	to, _ := ExampleNew([]byte(mySigningKey))
 	fmt.Println(to)
+	first_token = to
 	fmt.Println(reflect.TypeOf(to))
 	rep := &Response{Token: to, Status: 1}
 	b, _ := json.Marshal(rep)
 	io.WriteString(rw, string(b)) //write to body
-
+	fmt.Println(b)
 	//--------------------http server --------------------------
 	/*http server
 
@@ -277,6 +336,7 @@ func test(rw http.ResponseWriter, req *http.Request) {
 
 func main() {
 	http.HandleFunc("/api/v1/login", test)
+	http.HandleFunc("/api/v1/test", test2)
 	http.HandleFunc("/api/v1/report", report)
 	log.Fatal(http.ListenAndServe(":8083", nil))
 
