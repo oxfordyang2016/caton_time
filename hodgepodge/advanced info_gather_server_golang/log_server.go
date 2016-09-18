@@ -116,9 +116,9 @@ func login(rw http.ResponseWriter, req *http.Request) {
 		fmt.Println("login ok")
 	} else {
 		fmt.Println("when testing,comment below ")
-		rsp.Status = 4
-		rsp.Token = "error"
-		return
+		//rsp.Status = 4
+		//rsp.Token = "error"
+		//return
 	}
 	//-------------------------read http body----------------------------------------
 	body, _ := ioutil.ReadAll(req.Body)
@@ -129,7 +129,7 @@ func login(rw http.ResponseWriter, req *http.Request) {
 	//lookup database
 	rows, err_tmp := db.Query("SELECT * FROM who WHERE sn=?", t.Sn)
 
-	fmt.Print("*******************************lookup database exp------------------------------------------->", rows)
+	fmt.Print("lookup database row    ", rows)
 	if err_tmp != nil {
 		rsp.Status = 3
 		rsp.Token = "error"
@@ -183,7 +183,6 @@ func login(rw http.ResponseWriter, req *http.Request) {
 			}
 			//-------------break  and return usage---------------------
 			break
-			checkErr(err)
 
 		}
 
@@ -220,21 +219,12 @@ func login(rw http.ResponseWriter, req *http.Request) {
 			rsp.Token = "error"
 			return
 		}
-
-		//--------------return jwt in http response of login_ok------------------------------------->
-
-		to, _ := Newjwt(t.Sn, t.Version, []byte(mySigningKey)) //give jwt token
-
-		fmt.Println("jwt-----------------------token++++++++++++++++++++++", to)
-		rsp.Token = to
-		rsp.Status = 1
-		return
-
 	}
+	//--------------return jwt in http response of login_ok------------------------------------->
 	to, _ := Newjwt(t.Sn, t.Version, []byte(mySigningKey)) //give jwt token
 	rsp.Token = to
 	rsp.Status = 1
-
+	return
 }
 
 //-----------------------------------------------------------controller------------------------------------------
@@ -269,7 +259,7 @@ func report(rw http.ResponseWriter, req *http.Request) {
 	body, _ := ioutil.ReadAll(req.Body)
 	//--------------------------------------report verify--------------jwt verify---------------------------------
 	report_sn, report_version := JwtParse(token, "caton")
-	fmt.Println("report_sn", report_sn, "__________________________________report_version", report_version)
+	fmt.Println("report_sn ", report_sn, "report_version  ", report_version)
 	if report_sn == "error" {
 		rsp.Token = "error"
 		rsp.Status = 5
@@ -288,8 +278,6 @@ func report(rw http.ResponseWriter, req *http.Request) {
 				content_type = h
 			}
 
-			//fmt.Println("content+++", h)
-			//request := append(request, fmt.Sprintf(name, h))
 		}
 	}
 	fmt.Println(content_type)
@@ -306,7 +294,6 @@ func report(rw http.ResponseWriter, req *http.Request) {
 	}
 	defer stmt.Close()
 
-	//ko := "string"
 	res, err := stmt.Exec(report_sn, ip, time, report_version, content_type, content_length, body)
 
 	if err != nil {
@@ -327,45 +314,13 @@ func report(rw http.ResponseWriter, req *http.Request) {
 	rsp.Token = "success"
 	rsp.Status = 1
 	return
-	//db.Close()
 
-}
-
-//------formatRequest generates ascii representation of a request--------------read header--------------------------------
-func formatRequest(r *http.Request) string {
-	// Create return string
-	var request []string
-	// Add the request string
-	url := fmt.Sprintf("method==>", r.Method, "url===>", r.URL, "r.proto==>", r.Proto)
-	request = append(request, url)
-	// Add the host
-	request = append(request, fmt.Sprintf(r.Host))
-	// Loop through headers
-	for name, headers := range r.Header {
-		name := strings.ToLower(name)
-		for _, h := range headers {
-			fmt.Println("name++++", name)
-			fmt.Println("content+++", h)
-			request = append(request, fmt.Sprintf(name, h))
-		}
-	}
-
-	// // If this is a POST, add post data
-	// if r.Method == "POST" {
-	// 	r.ParseForm()
-	// 	request = append(request, "\n")
-	// 	request = append(request, r.Form.Encode())
-	// }
-	// // Return the request as a string
-	// return strings.Join(request, "\n")
-
-	return "header paser ok"
 }
 
 //--------------------------------global error handing mechnism---------------------------
 func checkErr(err error) {
 	if err != nil {
-		//panic(err)
+
 		fmt.Println(err)
 
 	}
@@ -387,39 +342,24 @@ func Newjwt(sn string, version string, mySigningKey []byte) (string, error) {
 
 //----------------------------------parser jwt token------------------------------------------
 
-//--------jwt token create---------
-//http://dghubble.com/blog/posts/json-web-tokens-and-go/
-/*
-func ExampleNew(mySigningKey []byte) (string, error) {
-	// Create the token
-	token := jwt.New(jwt.SigningMethodHS256)
-	// Set some claims
-	token.Claims["sn"] = sn_g
-	// Sign and get the complete encoded token as a string
-	tokenString, err := token.SignedString(mySigningKey)
-	return tokenString, err
-}
-*/
 func JwtParse(myToken string, myKey string) (string, string) {
-	fmt.Println("<-------------------------why is not------------------------------------------------>")
-	token, err := jwt.Parse(myToken, func(token *jwt.Token) (interface{}, error) {
-		return []byte(myKey), nil
-	})
 
-	// if err1 != nil {
-	//  panic(err1)
-	// }
-	//fmt.Println(err1)
+	token, err2 := jwt.Parse(myToken, func(token *jwt.Token) (interface{}, error) {
+		return []byte(myKey), nil
+
+	})
+	if err2 != nil {
+		fmt.Println(err)
+		return "error", "error"
+	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		b := fmt.Sprint(claims["sn"])
 		c := fmt.Sprint(claims["version"])
 		return b, c
-		//	return b
 	} else {
 		fmt.Println(err)
 
 	}
-	//fmt.Println(token.Claims["exp"])
 
 	if err == nil && token.Valid {
 		fmt.Println("Your token is valid.  I like your style.")
@@ -427,13 +367,6 @@ func JwtParse(myToken string, myKey string) (string, string) {
 		fmt.Println("This token is terrible!  I cannot accept this.")
 		return "error", "error"
 	}
-	// sample token string taken from the New example
-	//tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU"
-
-	// Parse takes the token string and a function for looking up the key. The latter is especially
-	// useful if you use multiple keys for your application.  The standard is to use 'kid' in the
-	// head of the token to identify which key to use, but the parsed token (head and claims) is provided
-	// to the callback, providing flexibility.
 	return "allok", "allok"
 
 }

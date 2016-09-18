@@ -41,7 +41,7 @@ def connect(q):
 
 def print_number(number):
     # Sleeps a random 1 to 10 seconds
-    rand_int_var = randint(1, 1000)
+    rand_int_var = randint(1, 10)
     sleep(rand_int_var)
     print ("Thread " + str(number) + " slept for " + str(rand_int_var) + " seconds"+"---------------------------------------------->")
     connect(number)
