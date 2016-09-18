@@ -19,17 +19,17 @@ for num in range(0,2000):
     print(json_obj['Token'])
 
 
-if json_obj['Token']!="error":
-    conn1 = http.client.HTTPConnection("localhost",8084)
-    #Authorization: Bearer <token>
-    #data1 = json.dumps(data)
-    au="Bearer"+" "+json_obj['Token']
-    headers = {"content-type": "application/x-www-form-urlencoded", "authorization":au}
-    conn1.request("POST", "/api/v1/report", data1, headers)#the third argv is body
-    response1 = conn1.getresponse()
-    print (response1.status, response1.reason)
-    data2 = response1.read()
-    print(data2)
-    print(num)
-    conn1.close()
+    if json_obj['Token']!="error":
+        conn1 = http.client.HTTPConnection("localhost",8084)
+        #Authorization: Bearer <token>
+        #data1 = json.dumps(data)
+        au="Bearer"+" "+json_obj['Token']
+        headers = {"content-type": "application/x-www-form-urlencoded", "authorization":au}
+        conn1.request("POST", "/api/v1/report", data1, headers)#the third argv is body
+        response1 = conn1.getresponse()
+        print (response1.status, response1.reason)
+        data2 = response1.read()
+        print(data2)
+        print(num)
+        conn1.close()
 conn.close()
