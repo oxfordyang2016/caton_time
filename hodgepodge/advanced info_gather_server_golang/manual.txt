@@ -1,6 +1,7 @@
-1.pelase grant client_server_database's addr and port is ok
+1.pelase grant client_server_database's addr and port is same
 1.log_server.go is first version
 2.jwt_expiration_test.py was used to test  jwt's expiration.you can comment/uncomment sleep time
 3.log_server0919.go is more simple successful version
 4.thread_exp.py is used to test many threads visiting
 5.README.md is communication protocal
+6.thread_test_client is also thread test_version,you can change the number of threads  and sn . 

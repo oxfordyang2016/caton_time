@@ -26,13 +26,19 @@ Note:
 4.cnvert md5(sn) to string,ie,string(md5("halloworld")) or a := fmt.Sprintf("%x", md5.Sum(sn)) //lowercase
 5.lowercase all string
 6.md5 computing_method example:
-    snk := []byte("hello")//convert string to byte
-  	md51 := fmt.Sprintf("%x", md5.Sum(snk))//convert md5 code to string
-	k := md51 + mySigningKey + date//string append
-	data1 := []byte(k)//convert byte to string
-	verify_data := fmt.Sprintf("%x", md5.Sum(data1))//convert byte to string
+    snk := []byte("hallo")//convert string to byte
+	md51 := fmt.Sprintf("%x", md5.Sum(snk))//convert md5 code to string
+	fmt.Println("first md51 is ", md51)
+	k := md51 + "caton" + "date"//string append
+	fmt.Println("join part string ", k)
+	data1 := []byte(k)
+	verify_data := fmt.Sprintf("%x", md5.Sum(data1))
+	fmt.Println("final md5 is ", verify_data)//convert byte to string
 
-
+   output:
+   first md51 is  598d4c200461b81522a3328565c25f7c
+   join part string  598d4c200461b81522a3328565c25f 
+   final md5 is  41d21f5dca8ce86e8b512fe0b46037af
 
 ```
 ### 2.login return  data
@@ -90,6 +96,8 @@ Note:
 1.report ok {"Token":"success","Status":1}
 1.jwt token error {"Token":"error","Status":5}
 2.server error {"Token":"error","Status":6}
+3.when returned status is 5,please login again 
+
 
 
 ```
