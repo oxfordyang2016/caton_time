@@ -24,22 +24,23 @@ type Response struct {
 }
 
 var (
-	db  *sql.DB
-	err error
+	db *sql.DB
 )
 
 const (
 	mySigningKey = "caton"
 	dbconnect    = "root:123456@tcp(192.168.0.81:3306)/hello"
+	expire
 )
 
 func main() {
-	db, err = sql.Open("mysql", dbconnect) //first configure a database
-	checkErr(err)
+	var err1 error
+	db, err1 = sql.Open("mysql", dbconnect) //first configure a database
+	checkErr(err1)
 	http.HandleFunc("/api/v1/login", login)
 	http.HandleFunc("/api/v1/test", test2)
 	http.HandleFunc("/api/v1/report", report)
-	log.Fatal(http.ListenAndServe(":8084", nil))
+	log.Fatal(http.ListenAndServe(":8087", nil))
 
 }
 func test2(rw http.ResponseWriter, req *http.Request) {
@@ -137,7 +138,7 @@ func login(rw http.ResponseWriter, req *http.Request) {
 	}
 	defer rows.Close()
 	fmt.Println("row is  ", rows)
-	checkErr(err)
+	checkErr(err_tmp)
 	found := false
 	fmt.Println("start to query database ")
 	for rows.Next() {
@@ -146,7 +147,7 @@ func login(rw http.ResponseWriter, req *http.Request) {
 		var model string
 		var version string
 		var last_login string
-		err = rows.Scan(&id1, &sn, &model, &version, &last_login)
+		err := rows.Scan(&id1, &sn, &model, &version, &last_login)
 		checkErr(err)
 
 		fmt.Println(sn)
@@ -257,8 +258,9 @@ func report(rw http.ResponseWriter, req *http.Request) {
 	word := strings.Fields(authorization)
 	token := word[1]
 	body, _ := ioutil.ReadAll(req.Body)
-	//--------------------------------------report verify--------------jwt verify---------------------------------
+	//--------------------------------------------jwt verify---------------------------------
 	report_sn, report_version := JwtParse(token, "caton")
+	fmt.Println("----------------what is ok--------------------------------")
 	fmt.Println("report_sn ", report_sn, "report_version  ", report_version)
 	if report_sn == "error" {
 		rsp.Token = "error"
@@ -330,7 +332,7 @@ func checkErr(err error) {
 func Newjwt(sn string, version string, mySigningKey []byte) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = jwt.MapClaims{
-		"exp":     11
+		"exp":     time.Now().Add(time.Second * 1).Unix(),
 		"sn":      sn,
 		"version": version,
 		"iat":     time.Now().Unix(),
@@ -344,30 +346,25 @@ func Newjwt(sn string, version string, mySigningKey []byte) (string, error) {
 //----------------------------------parser jwt token------------------------------------------
 
 func JwtParse(myToken string, myKey string) (string, string) {
-
-	token, err2 := jwt.Parse(myToken, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(myToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte(myKey), nil
-
 	})
-	if err2 != nil {
+
+	if err == nil && token.Valid {
+		fmt.Println("jwt is valid")
+	} else {
 		fmt.Println(err)
 		return "error", "error"
 	}
+
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		b := fmt.Sprint(claims["sn"])
 		c := fmt.Sprint(claims["version"])
 		return b, c
 	} else {
 		fmt.Println(err)
-
-	}
-
-	if err == nil && token.Valid {
-		fmt.Println("Your token is valid.  I like your style.")
-	} else {
-		fmt.Println("This token is terrible!  I cannot accept this.")
 		return "error", "error"
+
 	}
-	return "allok", "allok"
 
 }
