@@ -97,7 +97,7 @@ Note:
 1.jwt token error {"Token":"error","Status":5}
 2.server error {"Token":"error","Status":6}
 3.when returned status is 5,please login again 
-
+4.manual.txt is all_file's explation.   
 
 
 ```
