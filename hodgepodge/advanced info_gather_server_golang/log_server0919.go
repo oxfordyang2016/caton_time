@@ -30,7 +30,7 @@ var (
 const (
 	mySigningKey = "caton"
 	dbconnect    = "root:123456@tcp(192.168.0.81:3306)/hello"
-	expire
+	exptime      = time.Minute * 30
 )
 
 func main() {
@@ -332,7 +332,7 @@ func checkErr(err error) {
 func Newjwt(sn string, version string, mySigningKey []byte) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = jwt.MapClaims{
-		"exp":     time.Now().Add(time.Second * 1).Unix(),
+		"exp":     time.Now().Add(exptime).Unix(),
 		"sn":      sn,
 		"version": version,
 		"iat":     time.Now().Unix(),
