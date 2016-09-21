@@ -122,7 +122,16 @@ Note:
 | msg_body       | longblob     | YES  |     | NULL    |                |
 +----------------+--------------+------+-----+---------+----------------+
 ```
+### 5.database create table
+```
+ create database hello
 
+ create table who( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, sn VARCHAR(255), model VARCHAR(255), version VARCHAR(255), last_login VARCHAR(255))
+
+ create table report( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, sn VARCHAR(255), ip VARCHAR(255),time VARCHAR(255), version VARCHAR(255),content_type VARCHAR(255), content_length INT(11), msg_body longblob)
+
+ GRANT ALL ON hello.* TO root@'%' IDENTIFIED BY '123456';
+```
 
 
 
