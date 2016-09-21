@@ -1,5 +1,5 @@
 
-# Info_gather protocal and api 
+# Info_gather protocol and api 
 ## login 
 
 ### login method
@@ -56,7 +56,21 @@ Note:
 2.login password error {"Token":"error","Status":4}
 3.json arg error {"Token":"error","Status":2}
 3.servererror {"Token":"error","Status":3}
+
 ```
+### 3.Storing data example_table who
+```
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| sn         | varchar(255) | YES  |     | NULL    |                |
+| model      | varchar(255) | YES  |     | NULL    |                |
+| version    | varchar(255) | YES  |     | NULL    |                |
+| last_login | varchar(255) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+```
+
 # report
 ### 1.report method
 ```
@@ -74,17 +88,9 @@ authorization: Bearer <token>
 example 
 au="Bearer"+" "+json_obj['Token']//get response's token
 headers = {"content-type": "application/x-www-form-urlencoded", "authorization":au}
+
 ```
-### 3.report receive data
-```
-data             type                illustration 
---------------------------------------------------
-request_header   binary/string
-request_body     binary/string
-content_type     string
-content_length   string
-```
-### 4.return json data
+### 3.return json data
 ```
 ---------------------------------------------------
 1 report  success
@@ -97,10 +103,26 @@ Note:
 1.jwt token error {"Token":"error","Status":5}
 2.server error {"Token":"error","Status":6}
 3.when returned status is 5,please login again 
-4.manual.txt is all_file's explation.   
+4.Test_method is manual.txt
 
 
 ```
+### 4.Storing data exmaple_table report
+```
++----------------+--------------+------+-----+---------+----------------+
+| Field          | Type         | Null | Key | Default | Extra          |
++----------------+--------------+------+-----+---------+----------------+
+| id             | int(11)      | NO   | PRI | NULL    | auto_increment |
+| sn             | varchar(255) | YES  |     | NULL    |                |
+| ip             | varchar(255) | YES  |     | NULL    |                |
+| time           | varchar(255) | YES  |     | NULL    |                |
+| version        | varchar(255) | YES  |     | NULL    |                |
+| content_type   | varchar(255) | YES  |     | NULL    |                |
+| content_length | int(11)      | YES  |     | NULL    |                |
+| msg_body       | longblob     | YES  |     | NULL    |                |
++----------------+--------------+------+-----+---------+----------------+
+```
+
 
 
 
