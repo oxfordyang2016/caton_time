@@ -1,4 +1,5 @@
 package main
+
 //this is really node that manage downloading and upload
 import (
 	"cydex"
@@ -9,7 +10,6 @@ import (
 	"net"
 	"time"
 )
-
 
 //==============log block========================================
 func initLog() {
@@ -28,25 +28,27 @@ func initLog() {
 	}
 }
 
-type Application struct {//why need so many channel????
+type Application struct { //why need so many channel????
 	n                *Node
-	tasks            map[string]*Task
+	tasks            map[string]*Task //load same dir's task.go
 	new_task_chan    chan *Task
 	end_task_chan    chan string
-	notify_task_chan chan *transfer.TaskState
-	task_notify_conn *net.UDPConn
+	notify_task_chan chan *transfer.TaskState //"cydex/transfer"
+	task_notify_conn *net.UDPConn             //udp
 }
+
 //you must think why need application?????there
 //===============new a application==============use make===
 func NewApplication() *Application {
-	a := new(Application)//first initialize
-	a.tasks = make(map[string]*Task)//"make" create values
+	a := new(Application)            //first initialize
+	a.tasks = make(map[string]*Task) //"make" create values
 	a.new_task_chan = make(chan *Task)
 	a.end_task_chan = make(chan string)
 	a.notify_task_chan = make(chan *transfer.TaskState)
 	return a
 }
 
+//-----------------
 func (self *Application) taskServe() {
 	for {
 		select {
