@@ -9,16 +9,17 @@ for pings in range(100):
     message = bytes('yangming is here'+str(pings),"utf-8")    
     start = time.time()
     clientSocket.sendto(message, addr)
-    clientSocket.sendto(message, addr1)
-    time.sleep(2)
-'''
+    #clientSocket.sendto(message, addr1)
+ 
+
     try:
         data, server = clientSocket.recvfrom(1024)
         end = time.time()
         elapsed = end - start
-        print ('%s %d %d' % (data, pings, elapsed))
+        print ('%s %d %d' % (data, pings, elapsed))#parse data from server
     except timeout:
         print ('REQUEST TIMED OUT')
+    
+    time.sleep(0.02)
 
-    '''  
 #when you do a task ,you can cancel to comment above

@@ -9,8 +9,8 @@ while True:
     message = message.upper()
     print(message.strip(),address)
     if rand >= 4:
-        serverSocket.sendto(message, address) 
-
+        serverSocket.sendto(message, address)#senf info to client 
+         
 
 
 '''
