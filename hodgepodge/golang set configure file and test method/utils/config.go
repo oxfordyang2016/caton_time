@@ -30,16 +30,6 @@ func NewConfig(profile, cfgfile string) *Config {
 	return o
 }
 
-//---------------change unpacker------------
-/*-----------pkg section------------------
-    1.read a ini file
-    2.add pkg section 's power key when needed
-    3.delete power key
-/------------default_unpacker section------
-    1.add max_seg_size key in this section
-    2.delete the key in this section
-*/
-
 func (self *Config) SaveFileSlice(Switch bool) error {
 	cfg, err := ini.LooseLoad(self.cfgfile)
 	if err != nil {
@@ -54,7 +44,7 @@ func (self *Config) SaveFileSlice(Switch bool) error {
 	return cfg.SaveTo(self.cfgfile)
 }
 
-func (self *Config) SaveDefaultUnpackerArgs(maxofslice int, numberofslice int) error {
+func (self *Config) SaveDefaultUnpackerArgs(maxofslice uint64, numberofslice uint64) error {
 	cfg, err := ini.LooseLoad(self.cfgfile)
 	if err != nil {
 		return err

@@ -37,19 +37,5 @@ func Test_GetHumanSize(t *testing.T) {
 			ret := GetHumanSize(v)
 			So(ret, ShouldEqual, "0B")
 		})
-		Convey("initest", func() {
-			k := &Config{" ", "/tmp/ts.ini"}
-			k.SaveDefaultUnpackerArgs(65, 65)
-			k.SaveFileSlice(true)
-			cfg, _ := ini.LooseLoad(self.cfgfile)
-
-			val := cfg.Section("pkg").Key("file_slice").String()
-			val2 := cfg.Section("default_unpacker").Key("max_seg_size").String()
-			val3 := cfg.Section("default_unpacker").Key("max_seg_num").String()
-			So(val, ShouldEqual, "true")
-			So(val2, ShouldEqual, "608")
-			So(val3, ShouldEqual, "65")
-		})
-
 	})
 }
