@@ -35,7 +35,6 @@
     s[1] = false
     s[2] = "c"
     k = append(k, s...)
-    fmt.Println(k)
-
+    fmt.Println(k) //[5 false c]--slice store different type
     }
 ```
