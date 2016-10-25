@@ -1,7 +1,7 @@
 ![Minion](http://octodex.github.com/images/minion.png)
-# Happy Goalng
+# Happy Goalng Draft
 ```
-      1.how to get fmt output-->a:=fmt.sprint(object)
+      1.how to get fmt string output-->a:=fmt.sprint(object)
       2.defer func() {
         b:=json.marshal(&rsp)
         io.WS(string(b))
