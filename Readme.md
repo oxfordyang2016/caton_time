@@ -37,4 +37,18 @@
     k = append(k, s...)
     fmt.Println(k) //[5 false c]--slice store different type
     }
+
+    7.var k int
+      fmt.Println(k) // will print 0
+     type Stu struct {
+     hout int
+       }
+     var stu Stu
+     fmt.Println(stu)//will print{0} 
+
+    8.if a function has two  or more return value ,i  donot receive any return_values,it will be 
+       correct!if i  want to receive , i must receive all
+
+
+
 ```

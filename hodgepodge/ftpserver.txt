@@ -1,0 +1,7 @@
+sudo pip install pyftpdlib(install)
+
+python -m pyftpdlib -w(command line run)
+
+
+
+ftp://192.168.0.53:2121/(browser visit)
