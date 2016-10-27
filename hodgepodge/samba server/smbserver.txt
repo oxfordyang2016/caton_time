@@ -1,0 +1,18 @@
+1.remove all smb package
+2.yum install smb
+3.vim /etc/samba/smb.conf--->add below-->save
+   [yangming]
+
+        comment = yangming
+        path = /root/ --->that you want share
+        browseable = yes
+        guest ok = yes
+        writable = yes
+4. turn off iptables
+5.chmod 777 /root/ 
+6.service smb restart
+7.service smb restart
+8.in  windows,cmd input \\192.168.0.56\yangming       
+        
+
+link:https://www.youtube.com/watch?v=Sc9SWG2UdxY
