@@ -49,6 +49,52 @@
     8.if a function has two  or more return value ,i  donot receive any return_values,it will be 
        correct!if i  want to receive , i must receive all
 
+    9.print manyline shcema in golang
+    fmt.Println(`
+
+                              i have monster
+                              you know
+                              i love
+                              you
+                                |
+                                | 
+
+      `,varname)
+
+     10.change beego file output.go get back to client string info
+         func (output *BeegoOutput) JSON(data interface{}, hasIndent bool, coding bool) error {
+     output.Header("Content-Type", "application/json; charset=utf-8")
+      var content []byte
+       var err error
+         if hasIndent {
+    content, err = json.MarshalIndent(data, "", "  ")
+           } else {
+    content, err = json.Marshal(data)
+           }
+         fmt.Println(`
+                   I
+                  I
+       i want to say this is
+              return json
+                       |
+                       |
+
+
+    `, fmt.Sprint(stringsToJSON(string(content))))
+          if err != nil {
+    http.Error(output.Context.ResponseWriter, err.Error(), http.StatusInternalServerError)
+    return err
+          }
+
+         if coding {
+    content = []byte(stringsToJSON(string(content)))
+          }
+            // i want to get json string in there
+
+              return output.Body(content)
+        }
+
+
 
 
 ```
