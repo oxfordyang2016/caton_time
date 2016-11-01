@@ -93,6 +93,36 @@
 
               return output.Body(content)
         }
+       
+
+    10 .interface also can initiate!!!
+     //var unpacker Unpacker
+
+     /*
+
+     func GetUnpacker() Unpacker {
+      return unpacker
+     }
+
+
+     */
+     /*
+      type Unpacker interface {
+      // 根据用户和请求生成Pid
+      GeneratePid(uid string, title, notes string) (pid string)
+      // 根据pid生成fid
+      GenerateFid(pid string, index int, file *cydex.SimpleFile) (fid string, err error)
+      // 根据file生成segs
+      GenerateSegs(fid string, f *cydex.SimpleFile) (segs []*cydex.Seg, err error)
+      // GetPidFromFid, 快速获取pid
+      GetPidFromFid(fid string) string
+      // Unpack可能会设置参数,这里要保护
+      Enter()
+      Leave()
+     }
+
+     */
+
 
 
 

@@ -8,8 +8,10 @@
         browseable = yes
         guest ok = yes
         writable = yes
+
+------>setenforce 0        
 4. turn off iptables
-5.chmod 777 /root/ 
+5.chmod -R  777 /root/ 
 6.service smb restart
 7.service smb restart
 8.in  windows,cmd input \\192.168.0.56\yangming       
