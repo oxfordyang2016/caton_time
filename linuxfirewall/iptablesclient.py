@@ -1,7 +1,7 @@
 import http.client, urllib.parse,json,time
 params = urllib.parse.urlencode({'@number': 12524, '@type': 'issue', '@action': 'show'})
 headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-conn = http.client.HTTPConnection("192.168.0.81",8000)
+conn = http.client.HTTPConnection("192.168.0.68",8000)
 for num in range(0,2):
     data={'sn':'hallo','model':'model','version':'vesion','password':'password'}
     datat="helloyangming"+"this is "+str(num)+"   times"

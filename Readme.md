@@ -123,7 +123,47 @@
 
      */
 
+    11.slice as args in function!!!!!
+      /*
 
+      func (self *JobManager) GetJobsByUid(uid string, typ int) (jobs []*models.Job, err error) {
+        pids := self.GetUserTrack(uid, typ)
+        for _, pid := range pids {
+          hashid := HashJob(uid, pid, typ)
+          job := self.GetJob(hashid)
+          if job != nil {
+            jobs = append(jobs, job)
+          }
+        }
+        return
+      }
+
+
+    */
+
+     
+    12.return :you can retun all value or return none
+
+
+    13.return /\/\/\/\/\-------------
+        /*
+
+        jobs, err := pkg.JobMgr.GetJobsByUid(uid, cydex.UPLOAD)
+
+      func (self *JobManager) GetJobsByUid(uid string, typ int) (jobs []*models.Job, err error) {
+        pids := self.GetUserTrack(uid, typ)
+        for _, pid := range pids {
+          hashid := HashJob(uid, pid, typ)
+          job := self.GetJob(hashid)//it will geneate a ......
+          if job != nil {
+            jobs = append(jobs, job)
+          }
+        }
+        return
+      }
+
+
+    */
 
 
 
