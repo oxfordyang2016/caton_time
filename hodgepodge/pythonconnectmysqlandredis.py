@@ -18,7 +18,7 @@ numrows = int(cursor.rowcount)
 # get and display one row at a time.
 for x in range(0,numrows):
     row = cursor.fetchone()
-    print row[0], "-->", row[1]
+    print( row[0], "-->", row[1])
 
 #--------------------------------------------------------------
 
