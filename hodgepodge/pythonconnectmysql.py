@@ -4,7 +4,7 @@ import redis
 import sys
 # connect
 print sys.argv[1:]
-db = MySQLdb.connect(host="192.168.0.236", user="root", passwd="503951",db="cydex")
+db = MySQLdb.connect(host="192.168.0.237", user="root", passwd="503951",db="cydex")
 cursor = db.cursor()
 
 #define a function to get table row info and write it to dict
