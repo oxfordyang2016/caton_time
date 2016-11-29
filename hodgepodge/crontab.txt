@@ -1,0 +1,11 @@
+1.use "sudo crontab -e" add follow:---save----exit
+  
+* * * * * /usr/bin/python /tmp/pythontest.py  >>/tmp/pythonlog 2>&1
+* * * * * /bin/date  >>/tmp/pythonlog 2>&1
+2.use crontab -l  to look up rule list
+3.touch a file named pythonlog
+4.the content of pythontest.py
+  import os
+  print "hello"
+
+
