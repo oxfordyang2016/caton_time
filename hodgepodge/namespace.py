@@ -1,3 +1,5 @@
+#reference url:https://www.programiz.com/python-programming/namespace
+
 import os
 a=7
 def func():
