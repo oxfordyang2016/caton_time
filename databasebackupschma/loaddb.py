@@ -91,7 +91,7 @@ def mysql_load(dir,host,port,user,passwd):
                    print(commandline)
                    os.system(commandline)
                    os.remove(key)
-                break
+                break#break can terminate the loop
 
 
 
