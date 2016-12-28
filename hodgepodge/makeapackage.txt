@@ -1,0 +1,5 @@
+make a package ,you can reference below
+1.https://fpm.readthedocs.io/en/latest/intro.html
+2.command ---->fpm -s dir -n yangming -t rpm /home/ym/testrpm/
+
+

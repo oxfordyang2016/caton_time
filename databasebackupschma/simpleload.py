@@ -1,5 +1,5 @@
-loaddb3.mysql_load2('/loadtest2/','localhost',3306,'root','yangmingtestmysql')
-
+#loaddb3.mysql_load2('/loadtest2/','localhost',3306,'root','yangmingtestmysql')
+import os
 
 def mysql_load2(dir,host,port,user,passwd):
     pure_file_list=filter(lambda x:(os.path.isfile(x)and('bin' in x or 'sql' in x)) ,map(lambda x:os.path.join(dir,x),os.listdir(dir)))
