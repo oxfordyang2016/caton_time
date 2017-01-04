@@ -42,14 +42,14 @@ def get_back_file_path():
     print backup_dir_path
     return backup_dir_path
 def upload(upload_path):
-    fh = open(upload_path,'rb')
-    ftp_connection.storbinary('STOR %s'%os.path.basename(upload_path), fh)
-    os.remove(upload_path)
-    fh.close()
-    return upload_path+'====upload ok'
-if len(backup_dir_path)>5:
-    map(os.remove,get_back_file_path())
-    os.system('/usr/bin/mysqldump -u root -p503951 --single-transaction --flush-logs --master-data=2  --database cydex cydex_user >"/opt/cydex/$sdatefile"')
+    try:
+        fh = open(upload_path,'rb')
+        ftp_connection.storbinary('STOR %s'%os.path.basename(upload_path), fh)
+        os.remove(upload_path)
+        fh.close()
+        return upload_path+'====upload ok'
+    except:
+        print('Error-upload:---'+str(upload_path))    
 map(upload,get_back_file_path()[:-4])
 
 
