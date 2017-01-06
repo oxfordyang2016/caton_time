@@ -1,0 +1,9 @@
+centos 7 samba reference 
+http://lintut.com/easy-samba-installation-on-rhel-centos-7/
+
+in chcon -t samba_share_t anonymous/ step, i use setenforce 0!!!!
+
+
+
+
+
