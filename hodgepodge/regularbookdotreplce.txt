@@ -1,0 +1,14 @@
+
+1.vi text is bellow
+
+
+<li><a class="">23.2 Solutions for Ethernet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 686</a></li>
+<li><a class="">23.3 Solutions for Other LANs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 687</a></li>
+<li><a class="">23.4 Solutions for Links . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 688</a></li>
+<li><a class="">23.5 Solutions for Packets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 688</a></li><li><a class="">23.6 Solutions for Sliding Windows . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 690</a></li><li><a class="">23.7 Solutions for IPv4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 691</a></li><li><a class="">23.8 Solutions for Routing-Update Algorithms . . . . . . . . . . . . . . . . . . . . . . . . . . . 692</a></li><li><a class="">23.9 Solutions for Large-Scale IP Routing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 693</a></li> <li><a class="">23.10 Solutions for Dynamics of TCP Reno . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 693</a></li><li><a class="">Indices and tables 695</a></li>
+<li><a class="">Bibliography 697</a></li>
+<li><a class="">Index </a></li>
+
+2.vi regular expression
+:%s/\.\.*/ /
+note:you need escape character when you need some things as . /

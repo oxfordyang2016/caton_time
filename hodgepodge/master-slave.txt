@@ -1,0 +1,12 @@
+How to Setup MySQL (Master-Slave) Replication in RHEL, CentOS, Fedora
+1.use tutorial http://www.tecmint.com/ how-to-setup-mysql-master-slave-replication-in-rhel-centos-fedora/
+
+2.turn off iptables in master
+3.allow remote access mysql in master[it is important!!!!]
+
+
+
+
+
+
+

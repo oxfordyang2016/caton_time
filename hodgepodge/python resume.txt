@@ -1,0 +1,3 @@
+python resume
+1.Be familiar with packaging python code and shipping to pypi
+2.Be familiar with basic sort algorithm

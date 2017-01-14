@@ -1,0 +1,4 @@
+1.mysqldump -u root -pyangmingtestmysql --all-databases|gzip -c > dump.sql.gz
+2.create database yangming
+3.scp dump.sql.gz  root@192.168.201.140:/root/
+4.gzip -dc /root/dump.sql.gz |mysql -u root -pyangmingtestmysql(201.140)

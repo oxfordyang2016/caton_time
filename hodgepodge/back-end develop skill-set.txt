@@ -1,0 +1,33 @@
+                                   
+
+						                                               mongodb 
+						                                              /
+						                                             /
+						                                            /
+						                                      database--->mysql
+						                                          |  \
+						                                          |   \
+						                                          |     Redis
+						                                          | 
+						                                          v
+                                                            programming language------------->python 
+                                                                                     \
+                                                                   |                  \
+                                                                   |                   \
+                                                                   |                    \
+                                                                   |                    golang
+                                                                   |
+                                                                   v
+                                      others----------------Web services knowledge----REST (Representational State Transfer) web services
+                                      /                                      \
+                                     /                                        \
+                                    /                                          \
+                                   /                                            \
+                                  /                                              \
+                                 /                                                \
+                                /                                                  \
+                               /                                                    \
+                          1.distributed system theory                                                         \
+                                                                                   SOAP (Simple Object Access Protocol)
+
+                          2.managing complexity, and operations                                                         
