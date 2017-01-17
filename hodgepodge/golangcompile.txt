@@ -1,0 +1,13 @@
+#golang compile 
+
+1.cd dir
+2.go build 
+
+[dir]
+ !---main.go
+ !---dir1------ui.go
+ !---dir2------bs.go
+ !---dir3------router.go
+
+
+
