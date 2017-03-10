@@ -1,6 +1,6 @@
 def getinfo(func):
     def inner(*args,**kwargs):
-        print('you are input args is the below')
+        print('what you are inputing args is the below')
         for k in  args:
             print(k)
         func(*args,**kwargs)
@@ -20,7 +20,7 @@ def test(a,b):
 
 '''
 In [68]: test(3,4)
-you are input args is the below
+what you are inputing args is the below
 3
 4
 i love you7
@@ -33,7 +33,7 @@ a=getinfo(test1)
 
 '''
 In [71]: a(3,4,5)
-you are input args is the below
+what you are inputing args is the below
 3
 4
 5

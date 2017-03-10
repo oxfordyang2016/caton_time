@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import MySQLdb
+#if all set is ok ,in mariadb ,please firewalld ,mariadb status,reboot method is good
 import redis
 import sys
 # connect
